@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MyMediaProject (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MyMediaProject (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
