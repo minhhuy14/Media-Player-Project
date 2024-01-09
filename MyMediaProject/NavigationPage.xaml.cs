@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyMediaProject.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +24,37 @@ namespace MyMediaProject
     /// </summary>
     public sealed partial class NavigationPage : Page
     {
+        public NavigationViewItem SelectedItem { get; set; }
         public NavigationPage()
         {
             this.InitializeComponent();
+            this.DataContext = this;
+            contentFrame.Content = new HomePage();
+        }
+
+        private void nvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+
+            }
+            else
+            {
+                var selectedItem = (NavigationViewItem)args.SelectedItem;
+                string selectedItemTag = ((string)selectedItem.Tag);
+                if (selectedItemTag.Equals("Home")) 
+                {
+                
+                }
+                else if (selectedItemTag.Equals("Play queue"))
+                {
+
+                }
+                else if (selectedItemTag.Equals("Playlists"))
+                {
+
+                }
+            }
         }
     }
 }
