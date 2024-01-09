@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MyMediaProject.Pages.MusicPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyMediaProject.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
+    xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
+    
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="40 40 40 0">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush" Color="Transparent"/>
+                <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush" Color="Transparent"/>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0 0 0 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Music" FontSize="25" FontWeight="Bold"></TextBlock>
+            <Button Grid.Column="1" Content="Add folder" HorizontalAlignment="Right" Width="150"></Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0 0 0 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"></Button>
+
+            <Grid Grid.Row="1">
+                <!--<ctWinUI:DataGrid Grid.Row="2" x:Name="CustomersDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                           AutoGenerateColumns="False" 
+                           CanUserSortColumns="True"
+                           IsReadOnly="True" AllowFocusOnInteraction="False" AllowDrop="False" AllowFocusWhenDisabled="False"
+                           BorderThickness="0" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
+                           ItemsSource="{Binding ItemCollection, Mode=TwoWay}"
+                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                    <ctWinUI:DataGrid.Columns>
+                        <ctWinUI:DataGridTextColumn Header="No" 
+                            Binding="{Binding No}"
+                            Tag="No"
+                            Width="1*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Name"
+                            Binding="{Binding Name}"
+                            Tag="Name"
+                            Width="2*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Artist"
+                            Binding="{Binding Artist}"
+                            Tag="Artist" Width="2*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Album"
+                            Binding="{Binding Album}"
+                            Tag="Album" Width="2*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Genre"
+                            Binding="{Binding Genre}"
+                            Tag="Genre" Width="2*"/>
+         
+                        <ctWinUI:DataGridTextColumn Header="Length"
+                            Binding="{Binding Length}"
+                            Tag="Length" Width="2*"/>
+                    </ctWinUI:DataGrid.Columns>
+                </ctWinUI:DataGrid>-->
+            </Grid>
+        </Grid>
+
+
+        <Grid Grid.Row="2">
+            <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
+                          AreTransportControlsEnabled="True">
+                <MediaPlayerElement.TransportControls>
+                    <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
+                                         IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
+                </MediaPlayerElement.TransportControls>
+            </MediaPlayerElement>
+        </Grid>
+    </Grid>
+</Page>

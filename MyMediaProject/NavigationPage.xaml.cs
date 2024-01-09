@@ -29,14 +29,14 @@ namespace MyMediaProject
         {
             this.InitializeComponent();
             this.DataContext = this;
-            contentFrame.Content = new HomePage();
         }
 
         private void nvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected)
             {
-
+                // To test
+                contentFrame.Content = new MusicPage();
             }
             else
             {
@@ -44,15 +44,16 @@ namespace MyMediaProject
                 string selectedItemTag = ((string)selectedItem.Tag);
                 if (selectedItemTag.Equals("Home")) 
                 {
-                
+                    contentFrame.Content = new HomePage();
                 }
                 else if (selectedItemTag.Equals("Play queue"))
                 {
+                    contentFrame.Content = new PlayQueuePage();
 
                 }
                 else if (selectedItemTag.Equals("Playlists"))
                 {
-
+                    contentFrame.Content = new PlaylistsPage();
                 }
             }
         }

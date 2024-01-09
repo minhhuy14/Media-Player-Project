@@ -10,17 +10,17 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-            <NavigationView x:Name="nvMain"
-                            PaneDisplayMode="Left"
-                            IsBackButtonVisible="Collapsed"
-                            SelectionChanged="nvMain_SelectionChanged">
-                <NavigationView.MenuItems>
-                    <NavigationViewItem Content="Home" Tag="Home" Icon="Home" IsSelected="True" />
-                    <NavigationViewItem Content="Play queue" Tag="Play queue" Icon="MusicInfo"/>
-                    <NavigationViewItem Content="Playlists" Tag="Playlists" Icon="Bookmarks"/>
-                </NavigationView.MenuItems>
+        <NavigationView x:Name="nvMain"
+                        PaneDisplayMode="Left"
+                        IsBackButtonVisible="Collapsed"
+                        SelectionChanged="nvMain_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" Tag="Home" Icon="Home" IsSelected="True" />
+                <NavigationViewItem Content="Play queue" Tag="Play queue" Icon="ViewAll"/>
+                <NavigationViewItem Content="Playlists" Tag="Playlists" Icon="Play"/>
+            </NavigationView.MenuItems>
 
-                <Frame x:Name="contentFrame" />
-            </NavigationView>
+            <Frame x:Name="contentFrame" />
+        </NavigationView>
     </Grid>
 </Page>

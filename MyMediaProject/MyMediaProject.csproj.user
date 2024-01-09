@@ -8,6 +8,18 @@
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Pages\CreatePlaylistDialogPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MusicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PlaylistsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PlayQueuePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\HomePage.xaml">
       <SubType>Designer</SubType>
     </Page>
