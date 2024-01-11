@@ -21,7 +21,22 @@
                 <NavigationViewItem Content="Playlists" Tag="Playlists" Icon="Play"/>
             </NavigationView.MenuItems>
 
-            <Frame x:Name="contentFrame" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Frame Grid.Row="0" x:Name="contentFrame"/>
+                
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
+                                    AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
+                               IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
+            </Grid>
         </NavigationView>
     </Grid>
 </Page>

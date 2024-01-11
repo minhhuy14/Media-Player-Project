@@ -98,8 +98,8 @@ namespace MyMediaProject.Pages
             Debug.WriteLine(selectedMedia.Uri);
             if (selectedMedia!=null)
             {
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(selectedMedia.Uri);
-                mediaPlayerElement.MediaPlayer.Play();
+                NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(selectedMedia.Uri);
+                NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
             }
         }   
         

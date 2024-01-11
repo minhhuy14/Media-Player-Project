@@ -23,7 +23,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0 0 0 20">
@@ -75,24 +74,13 @@
                         <!--<ctWinUI:DataGridTextColumn Header="Genre"
                             Binding="{Binding Genre}"
                             Tag="Genre" Width="2*"/>-->
-         
+
                         <ctWinUI:DataGridTextColumn Header="Length"
                             Binding="{Binding Length}"
                             Tag="Duration" Width="2*"/>
                     </ctWinUI:DataGrid.Columns>
                 </ctWinUI:DataGrid>
             </Grid>
-        </Grid>
-
-
-        <Grid Grid.Row="2">
-            <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
-                          AreTransportControlsEnabled="True">
-                <MediaPlayerElement.TransportControls>
-                    <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-                                         IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
-                </MediaPlayerElement.TransportControls>
-            </MediaPlayerElement>
         </Grid>
     </Grid>
 </Page>

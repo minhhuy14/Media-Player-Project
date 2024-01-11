@@ -25,6 +25,7 @@ namespace MyMediaProject
     public sealed partial class NavigationPage : Page
     {
         public static Frame NVMain { get; private set; }
+        public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
         public NavigationPage()
         {
@@ -35,6 +36,7 @@ namespace MyMediaProject
         {
             this.DataContext = this;
             NVMain = contentFrame;
+            MainMediaPlayerElement = mediaPlayerElement;
         }
 
         private void nvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

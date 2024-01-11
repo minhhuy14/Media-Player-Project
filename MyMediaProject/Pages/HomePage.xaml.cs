@@ -102,8 +102,8 @@ namespace MyMediaProject.Pages
                 Uri fileUri = new Uri(file.Path);
                 mediaPlaylist.Add(fileUri);
                 //playlist.Items.Add(file.Name);
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
-                mediaPlayerElement.MediaPlayer.Play();
+                NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
+                NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
             }
             }
         }
