@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="40 40 40 0">
@@ -33,8 +34,9 @@
                     x:Name="MediaGridView"
                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                    ItemsSource="{Binding MediaCollection, Mode=OneWay}"
-                    SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
+                    ItemsSource="{Binding Playlists, Mode=OneWay}"
+                    SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
+                    SelectionChanged="MediaGridView_SelectionChanged"
                     HorizontalAlignment="Center" VerticalAlignment="Stretch">
                     <GridView.ItemTemplate>
                         <DataTemplate>
@@ -64,15 +66,6 @@
                  </GridView.ItemsPanel>-->
                 </GridView>
             </ScrollView>
-        </Grid>
-        <Grid Grid.Row="1" Margin="0 0 0 20">
-            <ListView x:Name="PlaylistsListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Playlist">
-                        <TextBlock Text="{x:Bind Name}" FontWeight="Bold"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
         </Grid>
         <Grid Grid.Row="2">
             <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"

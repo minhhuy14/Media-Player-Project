@@ -24,19 +24,24 @@ namespace MyMediaProject
     /// </summary>
     public sealed partial class NavigationPage : Page
     {
+        public static Frame NVMain { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
         public NavigationPage()
         {
             this.InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             this.DataContext = this;
+            NVMain = contentFrame;
         }
 
         private void nvMain_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected)
             {
-                // To test
-                contentFrame.Content = new MusicPage();
+                // Settings page
             }
             else
             {
@@ -57,5 +62,7 @@ namespace MyMediaProject
                 }
             }
         }
+
+
     }
 }

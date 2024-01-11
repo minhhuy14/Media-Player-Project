@@ -14,7 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Media.Playlists;
+using MyMediaProject.Models;
 using static MyMediaProject.Pages.HomePage;
 
 namespace MyMediaProject.Pages
@@ -22,6 +22,7 @@ namespace MyMediaProject.Pages
     public sealed partial class PlaylistsPage : Page
     {
         public ObservableCollection<Playlist> Playlists { get; set; }
+        public Playlist SelectedPlaylist { get; set; }
 
         private ContentDialog createPlaylistDialog;
 
@@ -29,8 +30,6 @@ namespace MyMediaProject.Pages
         {
             this.InitializeComponent();
             Playlists = new ObservableCollection<Playlist>();
-
-           
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -39,20 +38,51 @@ namespace MyMediaProject.Pages
 
             if (!string.IsNullOrEmpty(res))
             {
-                Playlists.Add(new Playlist { Name = res, MediaCollection = new ObservableCollection<Media>() });
+                Playlists.Add(new Playlist 
+                {
+                    Name = res, 
+                    MediaCollection = new ObservableCollection<Media>() 
+                    { 
+                        new Media 
+                        {
+                            No = 1,
+                            Name = "Love story",
+                            Artist = "No name",
+                            Length = 150,
+                            Genre = "Kpop"
+                        },
+                         new Media
+                        {
+                            No = 1,
+                            Name = "Love story",
+                            Artist = "No name",
+                            Length = 150,
+                            Genre = "Kpop"
+                        },
+                          new Media
+                        {
+                            No = 1,
+                            Name = "Love story",
+                            Artist = "No name",
+                            Length = 150,
+                            Genre = "Kpop"
+                        },
+
+                    }, 
+                    Image = "/Assets/StoreLogo.png"});
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = this;
+        }
+
+        private void MediaGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NavigationPage.NVMain.Content = new MusicPage(SelectedPlaylist);
         }
     }
 
-    public class Playlist
-    {
-        public string Name { get; set; }
-        public ObservableCollection<Media> MediaCollection { get; set; }
-    }
 
-    public class Media
-    {
-        public string Name { get; set; }
-        public string Image { get; set; }
-    }
 }

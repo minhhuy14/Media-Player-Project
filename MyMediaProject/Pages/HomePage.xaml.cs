@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,12 +56,6 @@ namespace MyMediaProject.Pages
             MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
 
             DataContext = this;
-        }
-
-        public class Media
-        {
-            public string Image { get; set; }
-            public string Name { get; set; }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)

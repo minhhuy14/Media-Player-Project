@@ -6,7 +6,7 @@
     xmlns:local="using:MyMediaProject.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
+    Loaded="Page_Loaded"
     xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
     
     mc:Ignorable="d"
@@ -33,7 +33,7 @@
 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Music" FontSize="25" FontWeight="Bold"></TextBlock>
+            <TextBlock Grid.Column="0" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold"></TextBlock>
             <Button Grid.Column="1" Content="Add folder" HorizontalAlignment="Right" Width="150"></Button>
         </Grid>
 
@@ -46,13 +46,13 @@
             <Button Grid.Row="0" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"></Button>
 
             <Grid Grid.Row="1">
-                <!--<ctWinUI:DataGrid Grid.Row="2" x:Name="CustomersDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                <ctWinUI:DataGrid Grid.Row="2" x:Name="CustomersDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                            AutoGenerateColumns="False" 
                            CanUserSortColumns="True"
                            IsReadOnly="True" AllowFocusOnInteraction="False" AllowDrop="False" AllowFocusWhenDisabled="False"
                            BorderThickness="0" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
-                           ItemsSource="{Binding ItemCollection, Mode=TwoWay}"
-                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                           ItemsSource="{Binding DisplayPlaylist.MediaCollection, Mode=TwoWay}"
+                           SelectedItem="{Binding SelectedMedia, Mode=TwoWay}">
                     <ctWinUI:DataGrid.Columns>
                         <ctWinUI:DataGridTextColumn Header="No" 
                             Binding="{Binding No}"
@@ -68,10 +68,6 @@
                             Binding="{Binding Artist}"
                             Tag="Artist" Width="2*"/>
 
-                        <ctWinUI:DataGridTextColumn Header="Album"
-                            Binding="{Binding Album}"
-                            Tag="Album" Width="2*"/>
-
                         <ctWinUI:DataGridTextColumn Header="Genre"
                             Binding="{Binding Genre}"
                             Tag="Genre" Width="2*"/>
@@ -80,7 +76,7 @@
                             Binding="{Binding Length}"
                             Tag="Length" Width="2*"/>
                     </ctWinUI:DataGrid.Columns>
-                </ctWinUI:DataGrid>-->
+                </ctWinUI:DataGrid>
             </Grid>
         </Grid>
 

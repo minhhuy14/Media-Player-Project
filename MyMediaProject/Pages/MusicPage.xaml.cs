@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +24,16 @@ namespace MyMediaProject.Pages
     /// </summary>
     public sealed partial class MusicPage : Page
     {
-        public MusicPage()
+        public Playlist DisplayPlaylist { get; set; }
+        public MusicPage(Playlist playlist)
         {
             this.InitializeComponent();
+            DisplayPlaylist = playlist;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = this;
         }
     }
 }
