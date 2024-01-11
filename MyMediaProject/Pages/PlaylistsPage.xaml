@@ -23,7 +23,8 @@
                 <ColumnDefinition></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-
+    
+            
             <TextBlock Grid.Column="0" Text="Playlists" FontSize="25" FontWeight="Bold"></TextBlock>
             <Button Grid.Column="1" Content="Create new playlists" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}" Click="Button_Click"></Button>
         </Grid>

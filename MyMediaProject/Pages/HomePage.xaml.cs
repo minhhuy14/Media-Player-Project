@@ -30,7 +30,7 @@ namespace MyMediaProject.Pages
     public sealed partial class HomePage : Page
     {
         private List<Uri> mediaPlaylist = new List<Uri>();
-        private int currentMediaIndex = 0;
+       
         // To Test HomePage
         public ObservableCollection<Media> MediaCollection { get; set; }
         public Media SelectedMedia { get; set; }  
@@ -70,30 +70,42 @@ namespace MyMediaProject.Pages
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
             //WinRT.Interop.InitializeWithWindow.Initialize(openPicker, WinRT.Interop.WindowNative.GetWindowHandle(this));
             openPicker.ViewMode=Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.MusicLibrary;
+
             openPicker.FileTypeFilter.Add(".wmv");
             openPicker.FileTypeFilter.Add(".mp4");
             openPicker.FileTypeFilter.Add(".wma");
             openPicker.FileTypeFilter.Add(".mp3");
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwd);
 
-            var files = await openPicker.PickMultipleFilesAsync();
+            //var files = await openPicker.PickMultipleFilesAsync();
 
-            // mediaPlayerElement is a MediaPlayerElement control defined in XAML
-            if (files.Count > 0)
-            {
-                foreach (var file in files)
-                {
-                    Uri fileUri = new Uri(file.Path);
-                    mediaPlaylist.Add(fileUri);
-                    //playlist.Items.Add(file.Name);
-                }
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-                mediaPlayerElement.MediaPlayer.Play();
+            //// mediaPlayerElement is a MediaPlayerElement control defined in XAML
+            //if (files.Count > 0)
+            //{
+            //    foreach (var file in files)
+            //    {
+            //        Uri fileUri = new Uri(file.Path);
+            //        mediaPlaylist.Add(fileUri);
+            //        //playlist.Items.Add(file.Name);
+            //    }
+            //    mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
+            //    mediaPlayerElement.MediaPlayer.Play();
 
                 //mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(file);
 
                 //mediaPlayerElement.MediaPlayer.Play();
+
+            var file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                Uri fileUri = new Uri(file.Path);
+                mediaPlaylist.Add(fileUri);
+                //playlist.Items.Add(file.Name);
+                mediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
+                mediaPlayerElement.MediaPlayer.Play();
+            }
             }
         }
     }
-}
+

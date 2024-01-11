@@ -34,9 +34,12 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Add folder" HorizontalAlignment="Right" Width="150"></Button>
+            <Button Grid.Column="1" Click="AddFile_Button" Content="Add files" HorizontalAlignment="Right" Width="150"></Button>
         </Grid>
-
+        <StackPanel Grid.Row="0" Margin="0 0 0 20" Orientation="Horizontal">
+            <AppBarButton Icon="Delete" Label="Clear" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
+            <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
+        </StackPanel>
         <Grid Grid.Row="1" Margin="0 0 0 20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -52,7 +55,8 @@
                            IsReadOnly="True" AllowFocusOnInteraction="False" AllowDrop="False" AllowFocusWhenDisabled="False"
                            BorderThickness="0" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
                            ItemsSource="{Binding DisplayPlaylist.MediaCollection, Mode=TwoWay}"
-                           SelectedItem="{Binding SelectedMedia, Mode=TwoWay}">
+                           SelectedItem="{Binding SelectedMedia, Mode=TwoWay}" 
+                            DoubleTapped="Handle_DoubleTapped">
                     <ctWinUI:DataGrid.Columns>
                         <ctWinUI:DataGridTextColumn Header="No" 
                             Binding="{Binding No}"
@@ -66,15 +70,15 @@
 
                         <ctWinUI:DataGridTextColumn Header="Artist"
                             Binding="{Binding Artist}"
-                            Tag="Artist" Width="2*"/>
+                            Tag="Artist" Width="2*" />
 
-                        <ctWinUI:DataGridTextColumn Header="Genre"
+                        <!--<ctWinUI:DataGridTextColumn Header="Genre"
                             Binding="{Binding Genre}"
-                            Tag="Genre" Width="2*"/>
+                            Tag="Genre" Width="2*"/>-->
          
                         <ctWinUI:DataGridTextColumn Header="Length"
                             Binding="{Binding Length}"
-                            Tag="Length" Width="2*"/>
+                            Tag="Duration" Width="2*"/>
                     </ctWinUI:DataGrid.Columns>
                 </ctWinUI:DataGrid>
             </Grid>

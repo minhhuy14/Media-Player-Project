@@ -14,6 +14,7 @@ namespace MyMediaProject.Models
         public string Image { get; set; }
         public string Artist { get; set; }
         public string Genre { get; set; }
-        public int Length { get; set; }
+        public string Length { get; set; }
+        public Uri Uri { get; set; }
     }
 }

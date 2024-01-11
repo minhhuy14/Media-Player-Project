@@ -48,7 +48,15 @@ namespace MyMediaProject.Pages
                             No = 1,
                             Name = "Love story",
                             Artist = "No name",
-                            Length = 150,
+                            Length = "150",
+                            Genre = "Kpop"
+                        },
+                        new Media
+                        {
+                            No = 1,
+                            Name = "Love story",
+                            Artist = "No name",
+                            Length = "150",
                             Genre = "Kpop"
                         },
                          new Media
@@ -56,15 +64,7 @@ namespace MyMediaProject.Pages
                             No = 1,
                             Name = "Love story",
                             Artist = "No name",
-                            Length = 150,
-                            Genre = "Kpop"
-                        },
-                          new Media
-                        {
-                            No = 1,
-                            Name = "Love story",
-                            Artist = "No name",
-                            Length = 150,
+                            Length = "150",
                             Genre = "Kpop"
                         },
 
