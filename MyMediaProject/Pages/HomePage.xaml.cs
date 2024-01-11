@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyMediaProject.Helpers;
 using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Gaming.Input.ForceFeedback;
@@ -31,6 +33,7 @@ namespace MyMediaProject.Pages
     public sealed partial class HomePage : Page
     {
         private List<Uri> mediaPlaylist = new List<Uri>();
+        private DataServices _dataServices;
 
         // To Test HomePage
         public ObservableCollection<Media> MediaCollection { get; set; }
@@ -40,11 +43,17 @@ namespace MyMediaProject.Pages
             this.InitializeComponent();
 
             MediaCollection = new ObservableCollection<Media>();
-
+            _dataServices = new DataServices();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            //var task = await _dataServices.LoadHome();
+            //task.ForEach(media =>
+            //{
+            //    MediaCollection.Add(media);
+            //});
+
             MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
             MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
             MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
