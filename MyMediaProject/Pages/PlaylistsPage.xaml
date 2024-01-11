@@ -65,7 +65,15 @@
                 </GridView>
             </ScrollView>
         </Grid>
-
+        <Grid Grid.Row="1" Margin="0 0 0 20">
+            <ListView x:Name="PlaylistsListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Playlist">
+                        <TextBlock Text="{x:Bind Name}" FontWeight="Bold"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
         <Grid Grid.Row="2">
             <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
                              AreTransportControlsEnabled="True">

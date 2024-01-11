@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <NavigationView x:Name="nvSample">
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Play" Content="Menu Item1" Tag="SamplePage1" />
@@ -18,11 +18,11 @@
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>
-        <!--<MediaPlayerElement x:Name="mediaPlayerElement"
+        --><!--<MediaPlayerElement x:Name="mediaPlayerElement"
                     Source="ms-appx:///D:/HK1 2023-2024/WINDOWS/MyMediaProject/MyMediaProject/Videos/video1.mp4"
                     Width="400"
                     AutoPlay="False"
-                    AreTransportControlsEnabled="True"/>-->
+                    AreTransportControlsEnabled="True"/>--><!--
         <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
           AreTransportControlsEnabled="True">
             <MediaPlayerElement.TransportControls>
@@ -36,6 +36,6 @@
         <Button Content="Remove file" Click="RemoveFile_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
 
 
-    </StackPanel>
+    </StackPanel>-->
  
 </Window>

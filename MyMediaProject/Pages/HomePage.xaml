@@ -25,7 +25,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="Home" FontSize="25" FontWeight="Bold"></TextBlock>
-            <ComboBox Grid.Column="1" PlaceholderText="Open files" HorizontalAlignment="Right" Width="150"></ComboBox>
+            <Button Grid.Column="1" Content="Open files" Click ="Button_Click" HorizontalAlignment="Right" Width="150"></Button>
         </Grid>
 
         <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
