@@ -35,17 +35,11 @@ namespace MyMediaProject.Pages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
-          
-       var res= await App.MainRoot.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
+            var res= await App.MainRoot.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
 
             if (!string.IsNullOrEmpty(res))
             {
-                string playlistName = (createPlaylistDialog.Content as TextBox).Text;
-                if (!string.IsNullOrEmpty(playlistName))
-                {
-                    Playlists.Add(new Playlist { Name = playlistName, MediaCollection = new ObservableCollection<Media>() });
-                }
+                Playlists.Add(new Playlist { Name = res, MediaCollection = new ObservableCollection<Media>() });
             }
         }
     }

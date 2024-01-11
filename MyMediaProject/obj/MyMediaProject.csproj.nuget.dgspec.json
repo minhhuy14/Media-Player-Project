@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\HK1 2023-2024\\WINDOWS\\Media_DesignUI\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj": {}
+    "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj": {}
   },
   "projects": {
-    "D:\\HK1 2023-2024\\WINDOWS\\Media_DesignUI\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj": {
+    "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\HK1 2023-2024\\WINDOWS\\Media_DesignUI\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
+        "projectUniqueName": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
         "projectName": "MyMediaProject",
-        "projectPath": "D:\\HK1 2023-2024\\WINDOWS\\Media_DesignUI\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\HK1 2023-2024\\WINDOWS\\Media_DesignUI\\MyMediaProject\\MyMediaProject\\obj\\",
+        "projectPath": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
