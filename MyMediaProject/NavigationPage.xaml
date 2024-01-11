@@ -28,8 +28,8 @@
                 </Grid.RowDefinitions>
                 
                 <Frame Grid.Row="0" x:Name="contentFrame"/>
-                
-                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
+
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                     AreTransportControlsEnabled="True">
                     <MediaPlayerElement.TransportControls>
                         <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
