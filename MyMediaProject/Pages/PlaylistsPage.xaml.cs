@@ -16,6 +16,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using MyMediaProject.Models;
 using static MyMediaProject.Pages.HomePage;
+using Windows.ApplicationModel;
 
 namespace MyMediaProject.Pages
 {
@@ -23,6 +24,8 @@ namespace MyMediaProject.Pages
     {
         public ObservableCollection<Playlist> Playlists { get; set; }
         public Playlist SelectedPlaylist { get; set; }
+        
+        private DataServices _dataServices;
 
         private ContentDialog createPlaylistDialog;
 
@@ -30,6 +33,9 @@ namespace MyMediaProject.Pages
         {
             this.InitializeComponent();
             Playlists = new ObservableCollection<Playlist>();
+            _dataServices = new DataServices();
+            string packageName = Package.Current.Id.FamilyName;
+
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -38,39 +44,49 @@ namespace MyMediaProject.Pages
 
             if (!string.IsNullOrEmpty(res))
             {
-                Playlists.Add(new Playlist 
+                Playlists.Add(new Playlist
                 {
-                    Name = res, 
-                    MediaCollection = new ObservableCollection<Media>() 
-                    { 
-                        new Media 
-                        {
-                            No = 1,
-                            Name = "Love story",
-                            Artist = "No name",
-                            Length = "150",
-                            Genre = "Kpop"
-                        },
-                        new Media
-                        {
-                            No = 1,
-                            Name = "Love story",
-                            Artist = "No name",
-                            Length = "150",
-                            Genre = "Kpop"
-                        },
-                         new Media
-                        {
-                            No = 1,
-                            Name = "Love story",
-                            Artist = "No name",
-                            Length = "150",
-                            Genre = "Kpop"
-                        },
+                    Name = res,
 
-                    }, 
-                    Image = "/Assets/StoreLogo.png"});
-            }
+                    MediaCollection = new ObservableCollection<Media>(),
+                    Image = "/Assets/StoreLogo.png"
+                });
+           
+               
+                    //{ 
+                    //    new Media 
+                    //    {
+                    //        No = 1,
+                    //        Name = "Love story",
+                    //        Artist = "No name",
+                    //        Length = "150",
+                    //        Genre = "Kpop",
+                    //        Uri= new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
+                    //    },
+                    //    new Media
+                    //    {
+                    //        No = 1,
+                    //        Name = "Love story",
+                    //        Artist = "No name",
+                    //        Length = "150",
+                    //        Genre = "Kpop",
+                    //        Uri=new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
+
+                    //    },
+                    //     new Media
+                    //    {
+                    //        No = 1,
+                    //        Name = "Love story",
+                    //        Artist = "No name",
+                    //        Length = "150",
+                    //        Genre = "Kpop",
+                    //        Uri= new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
+
+                    //    },
+
+                }
+                 
+            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -78,8 +94,9 @@ namespace MyMediaProject.Pages
             DataContext = this;
         }
 
-        private void MediaGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MediaGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            await _dataServices.SavePlaylists(Playlists.ToList());
             NavigationPage.NVMain.Content = new MusicPage(SelectedPlaylist);
         }
     }

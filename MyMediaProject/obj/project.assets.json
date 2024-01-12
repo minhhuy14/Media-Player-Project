@@ -12639,23 +12639,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {},
+    "C:\\Users\\ADMIN\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
+      "projectUniqueName": "D:\\HK1 2023-2024\\WINDOWS\\MediaProject_1201\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
       "projectName": "MyMediaProject",
-      "projectPath": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\obj\\",
+      "projectPath": "D:\\HK1 2023-2024\\WINDOWS\\MediaProject_1201\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
+      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+      "outputPath": "D:\\HK1 2023-2024\\WINDOWS\\MediaProject_1201\\MyMediaProject\\MyMediaProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

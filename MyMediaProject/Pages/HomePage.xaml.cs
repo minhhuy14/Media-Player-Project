@@ -48,10 +48,10 @@ namespace MyMediaProject.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //var task = await _dataServices.LoadHome();
-            //task.ForEach(media =>
+            //var task = await _dataservices.loadhome();
+            //task.foreach(media =>
             //{
-            //    MediaCollection.Add(media);
+            //    mediacollection.add(media);
             //});
 
             MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
