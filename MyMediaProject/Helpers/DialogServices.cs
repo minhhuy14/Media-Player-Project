@@ -41,5 +41,25 @@ namespace MyMediaProject.Helpers
                 return ((CreatePlaylistDialogPage)contentDialog.Content).Playlist;
             }
         }
+
+        public static async Task ShowDialog(
+          this FrameworkElement element,
+          string title,
+          string content)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = title,
+                CloseButtonText = "OK",
+                DefaultButton = ContentDialogButton.Close,
+                Content = content,
+
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                XamlRoot = element.XamlRoot,
+                RequestedTheme = element.ActualTheme,
+            };
+
+            await contentDialog.ShowAsync();
+        }
     }
 }

@@ -25,7 +25,11 @@
     
             
             <TextBlock Grid.Column="0" Text="Playlists" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Create new playlists" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}" Click="Button_Click"></Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Create playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="Button_Click" Margin="0 0 10 0"></Button>
+                <Button Content="Remove playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="Button_Click"></Button>
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1" Margin="0 0 0 20">

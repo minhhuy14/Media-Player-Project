@@ -9,30 +9,59 @@ namespace MyMediaProject.Helpers
 {
     public class DataServices
     {
-        private string _primaryPath;
-        private string _secondaryPath;
-       
+        public async Task<bool> RemovePlaylist(Playlist playlist) 
+        {
+            var task = await LoadAllPlaylists();
+            bool flag = false;
 
-        public DataServices() 
-        {
-            _primaryPath = "";
-            _secondaryPath = "";
-        }
-        
-        public async Task<List<Media>> LoadHome()
-        {
-          
-            return null;
+            for (int i = 0; i < task.Count; i++)
+            {
+                // If playlist is not existed => overwrite playlist
+                if (task[i].Name.Equals(playlist.Name))
+                {
+                    task.RemoveAt(i);
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag)
+            {
+                return true;
+            }
+            else 
+            {
+                return await SaveAllPlaylists(task);
+            }
         }
 
-        public async Task<bool> SaveHome()
+        public async Task<bool> SavePlaylist(Playlist playlist)
         {
-            return true;
+            var task = await LoadAllPlaylists();
+            bool flag = false;
+
+            for (int i = 0; i < task.Count; i++) 
+            {
+                // If playlist is not existed => overwrite playlist
+                if (task[i].Name.Equals(playlist.Name))
+                {
+                    task[i] = playlist;
+                    flag = true;
+                    break;
+                }
+            }
+
+            // If playlist is not existed => add new playlist
+            if (!flag)
+            {
+                task.Add(playlist);
+            }
+
+            return await SaveAllPlaylists(task);
         }
 
-        public async Task<bool> SavePlaylists(List<Playlist> p)
+        public async Task<bool> SaveAllPlaylists(List<Playlist> p)
         {
-           
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("playlist.txt", Windows.Storage.CreationCollisionOption.OpenIfExists);
            
@@ -61,7 +90,7 @@ namespace MyMediaProject.Helpers
             return true;
         }
 
-        public async Task<List<Playlist>> LoadPlaylists()
+        public async Task<List<Playlist>> LoadAllPlaylists()
         {
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlist.txt");

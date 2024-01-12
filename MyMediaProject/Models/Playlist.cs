@@ -12,5 +12,10 @@ namespace MyMediaProject.Models
         public string Name { get; set; }
         public string Image { get; set; }
         public ObservableCollection<Media> MediaCollection { get; set; }
+
+        public Playlist() 
+        {
+            MediaCollection = new ObservableCollection<Media>();
+        }
     }
 }

@@ -32,7 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="Home" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Add files" HorizontalAlignment="Right" Width="150"></Button>
+            <Button Grid.Column="1" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
         </Grid>
 
 

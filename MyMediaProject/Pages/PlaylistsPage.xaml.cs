@@ -27,15 +27,12 @@ namespace MyMediaProject.Pages
         
         private DataServices _dataServices;
 
-        private ContentDialog createPlaylistDialog;
-
         public PlaylistsPage()
         {
             this.InitializeComponent();
-            Playlists = new ObservableCollection<Playlist>();
             _dataServices = new DataServices();
-            string packageName = Package.Current.Id.FamilyName;
-
+            Playlists = new ObservableCollection<Playlist>();
+            LoadData();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -51,42 +48,13 @@ namespace MyMediaProject.Pages
                     MediaCollection = new ObservableCollection<Media>(),
                     Image = "/Assets/StoreLogo.png"
                 });
-           
-               
-                    //{ 
-                    //    new Media 
-                    //    {
-                    //        No = 1,
-                    //        Name = "Love story",
-                    //        Artist = "No name",
-                    //        Length = "150",
-                    //        Genre = "Kpop",
-                    //        Uri= new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
-                    //    },
-                    //    new Media
-                    //    {
-                    //        No = 1,
-                    //        Name = "Love story",
-                    //        Artist = "No name",
-                    //        Length = "150",
-                    //        Genre = "Kpop",
-                    //        Uri=new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
+            }
 
-                    //    },
-                    //     new Media
-                    //    {
-                    //        No = 1,
-                    //        Name = "Love story",
-                    //        Artist = "No name",
-                    //        Length = "150",
-                    //        Genre = "Kpop",
-                    //        Uri= new Uri("https://www.youtube.com/watch?v=8OZCyp-L1JU")
-
-                    //    },
-
-                }
-                 
-            
+            var flagResult = await _dataServices.SaveAllPlaylists(Playlists.ToList());
+            if (!flagResult) 
+            {
+                await App.MainRoot.ShowDialog("Error!", "Cannot save playlists!");
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -94,9 +62,20 @@ namespace MyMediaProject.Pages
             DataContext = this;
         }
 
+        private async void LoadData()
+        {
+            Playlists.Clear();
+
+            var task = await _dataServices.LoadAllPlaylists();
+            for (int i = 0; i < task.Count; i++)
+            {
+                Playlists.Add(task[i]);
+            }
+        }
+
         private async void MediaGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await _dataServices.SavePlaylists(Playlists.ToList());
+            await _dataServices.SaveAllPlaylists(Playlists.ToList());
             NavigationPage.NVMain.Content = new MusicPage(SelectedPlaylist);
         }
     }
