@@ -8,6 +8,7 @@ using MyMediaProject.Helpers;
 using MyMediaProject.Models;
 using System.Collections.ObjectModel;
 using Windows.Storage;
+using Windows.Media.Playback;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -52,6 +53,46 @@ namespace MyMediaProject.Pages
             await SetLocalMedia();
         }
 
+        private async void RemoveMedia_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteFileDialog = new ContentDialog
+            {
+                Title = "Remove Media",
+                Content = "Are you sure that you want to remove this media from playlist?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
+            deleteFileDialog.XamlRoot = this.XamlRoot;
+
+            ContentDialogResult result = await deleteFileDialog.ShowAsync();
+
+            // Interpret the result
+            if (result == ContentDialogResult.Primary)
+            {
+                if (SelectedMedia != null)
+                {
+                    int index;
+                    for (index = 0; index < MediaCollection.Count; index++)
+                    {
+                        if (MediaCollection[index].Uri.Equals(SelectedMedia.Uri))
+                        {
+                            break;
+                        }
+                    }
+                    MediaCollection.RemoveAt(index);
+                    bool flag = await _dataServices.SaveAllVideos(MediaCollection.ToList());
+                    if (flag)
+                    {
+                        await App.MainRoot?.ShowDialog("Success!", "Remove the video Successfully!");
+                    }
+                    else
+                    {
+                        await App.MainRoot?.ShowDialog("Error!", "Cannot remove the video!");
+                    }
+                }
+            }
+        }
+
         async private System.Threading.Tasks.Task SetLocalMedia()
         {
             var window = new Microsoft.UI.Xaml.Window();
@@ -81,7 +122,7 @@ namespace MyMediaProject.Pages
                     }
                     else
                     {
-                        await App.MainRoot.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
+                        await App.MainRoot?.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
                         continue;
                     }
                 }
@@ -103,6 +144,7 @@ namespace MyMediaProject.Pages
                     var videoPage = new VideoPage(file);
                     subWindow.Content = videoPage;
                     subWindow.Title = file.Name;
+
                     subWindow.Activate();
 
                     subWindow.Closed += (sender, e) =>
@@ -118,7 +160,7 @@ namespace MyMediaProject.Pages
                 }
                 else
                 {
-                    await App.MainRoot.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
+                    await App.MainRoot?.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
                 }
             }
         }
@@ -127,7 +169,7 @@ namespace MyMediaProject.Pages
             var flagResult = await _dataServices.SaveAllVideos(MediaCollection.ToList());
             if (!flagResult)
             {
-                await App.MainRoot.ShowDialog("Error", "Save videos failed!");
+                await App.MainRoot?.ShowDialog("Error", "Save videos failed!");
             }
         }
     }

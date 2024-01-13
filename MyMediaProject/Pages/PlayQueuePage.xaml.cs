@@ -109,7 +109,7 @@ namespace MyMediaProject.Pages
                     }
                     else
                     {
-                        await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                        await App.MainRoot?.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                         continue;
                     }
 
@@ -172,7 +172,7 @@ namespace MyMediaProject.Pages
                 }
                 else
                 {
-                    await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                    await App.MainRoot?.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
 
                 //Add to recent playlist
@@ -215,11 +215,11 @@ namespace MyMediaProject.Pages
                     bool flag = await _dataServices.SavePlaylist(DisplayPlaylist);
                     if (flag)
                     {
-                        await App.MainRoot.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
+                        await App.MainRoot?.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
                     }
                     else
                     {
-                        await App.MainRoot.ShowDialog("Error!", "Cannot remove media from playlists!");
+                        await App.MainRoot?.ShowDialog("Error!", "Cannot remove media from playlists!");
                     }
                 }
             }

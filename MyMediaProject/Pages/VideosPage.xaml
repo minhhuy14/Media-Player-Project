@@ -15,6 +15,7 @@
          <Grid.RowDefinitions>
              <RowDefinition Height="Auto"></RowDefinition>
              <RowDefinition Height="Auto"></RowDefinition>
+             <RowDefinition Height="Auto"></RowDefinition>
              <RowDefinition Height="1*"></RowDefinition>
          </Grid.RowDefinitions>
 
@@ -29,9 +30,14 @@
              <Button Grid.Column="1" Content="Add files" Click ="AddFiles_Click" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
          </Grid>
 
-         <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
+        <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
+       
+        <StackPanel Grid.Row="2" Margin="0 0 0 20" Orientation="Horizontal" HorizontalAlignment="Left">
+            <AppBarButton Icon="Delete" Label="Remove" Content="Remove" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1" Click="RemoveMedia_Click"></AppBarButton>
+            <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1" Click="AddFiles_Click"></AppBarButton>
+        </StackPanel>
 
-        <Grid Grid.Row="2" Margin="0 0 0 20">
+        <Grid Grid.Row="3" Margin="0 0 0 20">
             <ScrollView HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" VerticalScrollChainMode="Always">
                 <GridView  
                      x:Name="MediaGridView"
@@ -59,14 +65,6 @@
                             </StackPanel>
                         </DataTemplate>
                     </GridView.ItemTemplate>
-
-                    <!--<GridView.ItemsPanel>
-                         <ItemsPanelTemplate>
-                             <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                                   MaximumRowsOrColumns="5"
-                                   Orientation="Horizontal"/>
-                         </ItemsPanelTemplate>
-                     </GridView.ItemsPanel>-->
                 </GridView>
             </ScrollView>
         </Grid>

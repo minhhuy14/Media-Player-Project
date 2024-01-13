@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation.Diagnostics;
 using Windows.Storage;
+using Windows.UI.Popups;
 
 namespace MyMediaProject.Helpers
 {
@@ -259,7 +260,6 @@ namespace MyMediaProject.Helpers
                 if (recentlist.Count > 0)
                 {
                     sb.AppendLine(recentlist.Count.ToString());
-
                 }
                 else
                 {
@@ -345,8 +345,17 @@ namespace MyMediaProject.Helpers
                 {
                     return false;
                 }
+
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine(videoFiles.Count.ToString());
+
+                if (videoFiles.Count > 0)
+                {
+                    sb.AppendLine(videoFiles.Count.ToString());
+                }
+                else
+                {
+                    return true;
+                }
 
                 foreach (var media in videoFiles)
                 {
@@ -354,6 +363,7 @@ namespace MyMediaProject.Helpers
                     sb.AppendLine(media.Uri.ToString());
                 }
 
+                Debug.WriteLine("Debug - videoFile.Count= " + videoFiles.Count);
                 await Windows.Storage.FileIO.WriteTextAsync(sampleFile, sb.ToString());
                 return true;
             }

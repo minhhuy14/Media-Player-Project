@@ -38,7 +38,7 @@ namespace MyMediaProject.Pages
 
         private async void CreatePlayList(object sender, RoutedEventArgs e)
         {
-            var res= await App.MainRoot.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
+            var res= await App.MainRoot?.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
 
             if (!string.IsNullOrEmpty(res))
             {
@@ -54,7 +54,7 @@ namespace MyMediaProject.Pages
             var flagResult = await _dataServices.SaveAllPlaylists(Playlists.ToList());
             if (!flagResult) 
             {
-                await App.MainRoot.ShowDialog("Error!", "Cannot save playlists!");
+                await App.MainRoot?.ShowDialog("Error!", "Cannot save playlists!");
             }
         }
 
@@ -82,11 +82,11 @@ namespace MyMediaProject.Pages
                 var flagResult = await _dataServices.RemovePlaylist(SelectedPlaylist);
                 if (!flagResult)
                 {
-                    await App.MainRoot.ShowDialog("Error!", "Cannot remove playlists!");
+                    await App.MainRoot?.ShowDialog("Error!", "Cannot remove playlists!");
                 }
                 else
                 {
-                    await App.MainRoot.ShowDialog("Success!", "Remove Playlist Successfully!");
+                    await App.MainRoot?.ShowDialog("Success!", "Remove Playlist Successfully!");
 
                 }
                 Playlists.Remove(SelectedPlaylist);

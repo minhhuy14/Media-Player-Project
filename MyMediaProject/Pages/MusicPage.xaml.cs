@@ -82,11 +82,6 @@ namespace MyMediaProject.Pages
             DataContext = this;
         }
 
-        private async void Page_UnLoaded(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
         private async void AddFiles_Button(object sender, RoutedEventArgs e)
         {
             await SetLocalMedia();
@@ -131,11 +126,11 @@ namespace MyMediaProject.Pages
                    bool flag= await _dataServices.SavePlaylist(DisplayPlaylist);
                     if (flag)
                     {
-                        await App.MainRoot.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
+                        await App.MainRoot?.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
                     }
                     else
                     {
-                        await App.MainRoot.ShowDialog("Error!", "Cannot remove media from playlists!");
+                        await App.MainRoot?.ShowDialog("Error!", "Cannot remove media from playlists!");
                     }
                 }
             }
@@ -153,11 +148,11 @@ namespace MyMediaProject.Pages
             var res= await _dataServices.SaveAPlayListToFile(DisplayPlaylist, file);
             if (res)
             {
-                   await App.MainRoot.ShowDialog("Success!", "Save playlist successfully!");
+                   await App.MainRoot?.ShowDialog("Success!", "Save playlist successfully!");
             }
             else
             {
-                await App.MainRoot.ShowDialog("Error!", "Cannot save playlist!");
+                await App.MainRoot?.ShowDialog("Error!", "Cannot save playlist!");
             }
 
         }
@@ -236,7 +231,7 @@ namespace MyMediaProject.Pages
                     }
                     else
                     {
-                        await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                        await App.MainRoot?.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                         continue;
                     }
                 }
@@ -268,7 +263,7 @@ namespace MyMediaProject.Pages
                 }
                 else
                 { 
-                    await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                    await App.MainRoot?.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
             }
         }

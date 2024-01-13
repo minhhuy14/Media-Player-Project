@@ -19,7 +19,6 @@ namespace MyMediaProject.Pages
             this.InitializeComponent();
             VideoFile = videoFile;
             Uri fileUri = new Uri(VideoFile.Path);
-            //playlist.Items.Add(file.Name);
             mediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
             mediaPlayerElement.MediaPlayer.Play();
         }

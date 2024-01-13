@@ -66,7 +66,10 @@ namespace MyMediaProject
             m_window.Activate();
             m_window.Closed += (sender, e) =>
             {
-                ((NavigationPage)m_window.Content).Dispose();
+                ((NavigationPage)m_window.Content)?.Dispose();
+                m_window.Content = null;
+                MainRoot = null;
+                Current.Exit();
             };
 
             MainRoot = m_window.Content as FrameworkElement;

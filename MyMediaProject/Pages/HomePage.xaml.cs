@@ -194,7 +194,7 @@ namespace MyMediaProject.Pages
             var flagResult = await _dataServices.SaveRecentPlay(RecentMedia.ToList(),"recentPlayed.txt");
             if (!flagResult)
             {
-                await App.MainRoot.ShowDialog("Error", "Saving recent files failed!");
+                await App.MainRoot?.ShowDialog("Error", "Saving recent files failed!");
             }
         }
     }
