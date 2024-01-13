@@ -27,18 +27,44 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                
-                <Frame Grid.Row="0" x:Name="contentFrame"/>
 
-                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill">
-                        <MediaPlayerElement.TransportControls>
-                            <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False"
-                                                    IsPlaybackRateButtonVisible="True" 
-                                                    IsPlaybackRateEnabled="True"
-                                                    IsNextTrackButtonVisible="True"
-                                                    IsPreviousTrackButtonVisible="True"/>
-                        </MediaPlayerElement.TransportControls>
+                <Frame Grid.Row="0" x:Name="contentFrame"></Frame>
+
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
+                                    IsPlaybackRateButtonVisible="True" 
+                                    IsPlaybackRateEnabled="True"
+                                                IsNextTrackButtonVisible="True"
+                                                IsPreviousTrackButtonVisible="True"/>
+                    </MediaPlayerElement.TransportControls>
                 </MediaPlayerElement>
+
+                <!--<MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
+                             IsPlaybackRateButtonVisible="True" 
+                                                IsPlaybackRateEnabled="True"/>
+                    </MediaPlayerElement.TransportControls>
+                    
+
+                    --><!--<MediaPlayerElement.TransportControls>
+                        <local:CustomMediaTransportControls x:Name="customMTC"
+                                            IsFastForwardButtonVisible="True"
+                                            IsFastForwardEnabled="True"
+                                            IsFastRewindButtonVisible="True"
+                                            IsFastRewindEnabled="True"
+                                            IsPlaybackRateButtonVisible="True"
+                                            IsPlaybackRateEnabled="True"
+                                            IsCompact="False">
+                        </local:CustomMediaTransportControls>
+                    </MediaPlayerElement.TransportControls>--><!--
+
+                </MediaPlayerElement>
+                <FontIcon Glyph="&#xE893;" Grid.Row="1" />
+                <FontIcon Glyph="&#xE892;" Grid.Row="1" />-->
             </Grid>
         </NavigationView>
     </Grid>

@@ -52,7 +52,7 @@
                                  HorizontalAlignment="Stretch" 
                                  VerticalAlignment="Stretch">
                                     <Image Width="150" Height="150" 
-                                     Source="{Binding Image}"/>
+                                     Source="{Binding Image}" Stretch="UniformToFill"/>
                                 </Border>
                                 <TextBlock Margin="5 5 0 0" TextWrapping="Wrap" HorizontalTextAlignment="Left">
                                  <Run Text="{Binding Name}" FontWeight="Bold"/>

@@ -18,7 +18,9 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Gaming.Input.ForceFeedback;
 using Windows.Media.Core;
+using Windows.Media.Playback;
 using Windows.Media.Playlists;
+using Windows.Storage;
 using Windows.Web.Http;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -48,27 +50,24 @@ namespace MyMediaProject.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //var task = await _dataservices.loadhome();
-            //task.foreach(media =>
-            //{
-            //    mediacollection.add(media);
-            //});
 
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
-            MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = "File1" });
+            List<Media> res= await _dataServices.LoadRecentMedia();
+            if (res!=null)
+            {
+                foreach (var item in res)
+                {
+                    item.Image = "/Assets/PlaylistLogo.jpg";
+                    item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
+                    MediaCollection.Add(item);
 
+                }
+            }
+            
+           
             DataContext = this;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             await SetLocalMedia();
         }
@@ -110,6 +109,9 @@ namespace MyMediaProject.Pages
             if (file != null)
             {
                 var extension = Path.GetExtension(file.Name);
+                Uri fileUri = new Uri(file.Path);
+
+             
 
                 if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                 {
@@ -120,14 +122,55 @@ namespace MyMediaProject.Pages
                 }
                 else 
                 {
-                    Uri fileUri = new Uri(file.Path);
                     mediaPlaylist.Add(fileUri);
                     //playlist.Items.Add(file.Name);
                     NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
                 }
+
+                //Create media object for adding to recent playlist
+                Media media = new Media
+                {
+                    Name = file.Name,
+                    Uri = fileUri,
+                    Image = "/Assets/PlaylistLogo.jpg",
+                    ImageBitmap = await _dataServices.GetThumbnailAsync(fileUri)
+                };
+
+                NavigationPage.RecentMedia.Enqueue(media);
+
             }
 
+        }
+        private async void ItemMedia_Click(object sendr, RoutedEventArgs e)
+        {
+            if (SelectedMedia != null)
+            {
+                var extension = Path.GetExtension(SelectedMedia.Name);
+                Uri fileUri = SelectedMedia.Uri;
+
+                StorageFile file=await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
+
+                if (extension.Equals(".mp4") || extension.Equals(".wmv"))
+                {
+                    var subWindow = new Window();
+                    var videoPage = new VideoPage(file);
+                    subWindow.Content = videoPage;
+                    subWindow.Activate();
+                }
+                else
+                {
+                    mediaPlaylist.Add(fileUri);
+                    //playlist.Items.Add(file.Name);
+                    NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
+                    NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                }
+
+            }
+        }
+        private async void Page_UnLoaded(object sender, RoutedEventArgs e)
+        {
+            _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
         }
     }
 }

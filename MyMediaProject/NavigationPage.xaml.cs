@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 using MyMediaProject.Models;
 using MyMediaProject.Pages;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,11 +30,15 @@ namespace MyMediaProject
         public static Frame NVMain { get; private set; }
         public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
-        public Playlist displayPlaylist; 
 
+        public static Queue<Media> RecentMedia { get; set; } 
+        
+
+        private int currentMediaIndex = 0;
         public NavigationPage()
         {
             this.InitializeComponent();
+            RecentMedia = new Queue<Media>();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -68,5 +73,7 @@ namespace MyMediaProject
                 }
             }
         }
+       
+       
     }
 }

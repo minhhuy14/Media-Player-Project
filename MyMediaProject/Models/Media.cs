@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Media.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,6 @@ namespace MyMediaProject.Models
         public string Genre { get; set; }
         public string Length { get; set; }
         public Uri Uri { get; set; } 
+        public BitmapImage ImageBitmap { get; set; }
     }
 }

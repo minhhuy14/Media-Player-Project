@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
      Loaded="Page_Loaded"
+    Unloaded="Page_UnLoaded"
     xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
     
     mc:Ignorable="d"
@@ -34,7 +35,7 @@
             <TextBlock Grid.Column="0" Text="Play Queue" FontSize="25" FontWeight="Bold"></TextBlock>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Add files" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 10 0"></Button>
+                <Button Content="Add files" Width="150" Style="{StaticResource AccentButtonStyle}" Click="AddFile_Click" Margin="0 0 10 0"></Button>
                 <Button Content="Load a playlist" Click="LoadPlayList_Click" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
             </StackPanel>
         </Grid>
@@ -48,17 +49,18 @@
 
             <StackPanel Grid.Row="0" Margin="0 0 0 20" Orientation="Horizontal">
                 <AppBarButton Icon="Delete" Label="Clear" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
-                <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
+                <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1"  Click="AddFile_Click"></AppBarButton>
             </StackPanel>
 
             <Grid Grid.Row="1">
-                <!--<ctWinUI:DataGrid Grid.Row="2" x:Name="CustomersDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                <ctWinUI:DataGrid Grid.Row="2" x:Name="CustomersDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                   AutoGenerateColumns="False" 
                                   CanUserSortColumns="True"
                                   IsReadOnly="True" AllowFocusOnInteraction="False" AllowDrop="False" AllowFocusWhenDisabled="False"
                                   BorderThickness="0" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
-                                  ItemsSource="{Binding ItemCollection, Mode=TwoWay}"
-                                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                                  ItemsSource="{Binding DisplayPlaylist.MediaCollection, Mode=TwoWay}"
+                                  SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
+                                  DoubleTapped="Handle_DoubleTapped">
                     <ctWinUI:DataGrid.Columns>
                         <ctWinUI:DataGridTextColumn Header="No" 
                             Binding="{Binding No}"
@@ -74,19 +76,19 @@
                             Binding="{Binding Artist}"
                             Tag="Artist" Width="2*"/>
 
-                        <ctWinUI:DataGridTextColumn Header="Album"
+                        <!--<ctWinUI:DataGridTextColumn Header="Album"
                             Binding="{Binding Album}"
                             Tag="Album" Width="2*"/>
 
                         <ctWinUI:DataGridTextColumn Header="Genre"
                             Binding="{Binding Genre}"
-                            Tag="Genre" Width="2*"/>
+                            Tag="Genre" Width="2*"/>-->
                 
                         <ctWinUI:DataGridTextColumn Header="Length"
                             Binding="{Binding Length}"
-                            Tag="Length" Width="2*"/>
+                            Tag="Duration" Width="2*"/>
                     </ctWinUI:DataGrid.Columns>
-                </ctWinUI:DataGrid>-->
+                </ctWinUI:DataGrid>
             </Grid>
         </Grid>
     </Grid>

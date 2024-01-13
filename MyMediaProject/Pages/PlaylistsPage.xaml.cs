@@ -47,7 +47,7 @@ namespace MyMediaProject.Pages
                     Name = res,
 
                     MediaCollection = new ObservableCollection<Media>(),
-                    Image = "/Assets/StoreLogo.png"
+                    Image = "/Assets/PlaylistLogo.jpg"
                 });
             }
 
@@ -84,14 +84,15 @@ namespace MyMediaProject.Pages
                 {
                     await App.MainRoot.ShowDialog("Error!", "Cannot remove playlists!");
                 }
+                else
+                {
+                    await App.MainRoot.ShowDialog("Success!", "Remove Playlist Successfully!");
+
+                }
                 Playlists.Remove(SelectedPlaylist);
 
             }
-            else
-            {
-                // User clicked 'No' button or dismissed the dialog
-            
-            }
+           
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

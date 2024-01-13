@@ -1,4 +1,5 @@
-﻿using MyMediaProject.Models;
+﻿using Microsoft.UI.Xaml.Media.Imaging;
+using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -173,37 +174,94 @@ namespace MyMediaProject.Helpers
             }
             return playlists;
         }
-        public async Task<bool> RemoveMedia(Playlist pl, Media md)
+       public async Task<bool> SaveRecentPlay(Queue<Media> recentlist)
         {
-            //  var task = await LoadAllPlaylists();
-            //  bool flag = false;
-            //  for (int i = task.Result.Count - 1; i >= 0; i--)
-            //  {
-            //      if (task.Result[i].Name.Equals(pl.Name))
-            //      {
-            //          for (int j = task.Result[i].MediaCollection.Count - 1; j >= 0; j--)
-            //          {
-            //              if (task.Result[i].MediaCollection[j].Name.Equals(md.Name))
-            //              {
-            //                  task.Result[i].MediaCollection.RemoveAt(j);
-            //                  flag = true;
-            //                  break;
-            //              }
-            //          }
-            //          break;
-            //      }
-            //  }   
-            //if (!flag)
-            //  {
-            //      return true;
-            //  }
-            //  else
-            //  {
-            //      return await SaveAllPlaylists(task);
-            //  }
 
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("rencentPlayed.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
+            if (!sampleFile.IsAvailable)
+            {
+                return false;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(recentlist.Count.ToString());
+
+            foreach (var media in recentlist)
+            {
+               
+                    sb.AppendLine(media.Name);
+                    sb.AppendLine(media.Artist);
+                    sb.AppendLine(media.Length);
+
+                    sb.AppendLine(media.Uri.ToString());
+               
+            }
+
+            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, sb.ToString());
             return true;
         }
+
+        public async Task<List<Media>> LoadRecentMedia() {             
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("rencentPlayed.txt");
+            if (item == null)
+            {
+                // File does not exist
+                return null;
+            }
+            Windows.Storage.StorageFile sampleFile = (Windows.Storage.StorageFile)item;
+
+            //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("rencentPlayed.txt");
+            if (!sampleFile.IsAvailable)
+            {
+                return null;
+            }
+            var content = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+            if (string.IsNullOrEmpty(content))
+            {
+                // The content of the file is empty
+                return null;
+            }
+            var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            int count = int.Parse(lines[0]);
+            List<Media> medias = new List<Media>();
+
+            int index = 1;
+            for (int i = 0; i < count; i++)
+            {
+                Media media = new Media();
+                media.Name = lines[index++];
+                media.Artist = lines[index++];
+                media.Length = lines[index++];
+                media.Uri = new Uri(lines[index++]);
+   
+                medias.Add(media);
+            }
+            return medias;
+        }
+       public async Task<BitmapImage> GetThumbnailAsync(Uri fileUri)
+        {
+            var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
+            string extension = file.FileType;
+            Windows.Storage.FileProperties.StorageItemThumbnail thumbnail = null;
+            if (extension.Equals(".mp3")||extension.Equals(".wma"))
+            {
+                 thumbnail   = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView, 200, Windows.Storage.FileProperties.ThumbnailOptions.UseCurrentScale);
+
+            }
+            else
+            {
+                thumbnail=await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.VideosView, 200, Windows.Storage.FileProperties.ThumbnailOptions.UseCurrentScale);
+            }
+
+            var bitmapImage = new BitmapImage();
+            await bitmapImage.SetSourceAsync(thumbnail);
+
+            return bitmapImage;
+        }
+
     }
+
 }
 
