@@ -32,9 +32,11 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="Play Queue" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
-            <Button Grid.Column="1" Content="Load A Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="LoadPlayList_Click"></Button>
 
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add files" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 10 0"></Button>
+                <Button Content="Load a playlist" Click="LoadPlayList_Click" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            </StackPanel>
         </Grid>
 
 

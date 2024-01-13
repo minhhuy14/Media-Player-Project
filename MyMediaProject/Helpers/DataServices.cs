@@ -175,36 +175,35 @@ namespace MyMediaProject.Helpers
         }
         public async Task<bool> RemoveMedia(Playlist pl, Media md)
         {
-            var task = await LoadAllPlaylists();
-            bool flag = false;
-            for (int i = task.Result.Count - 1; i >= 0; i--)
-            {
-                if (task.Result[i].Name.Equals(pl.Name))
-                {
-                    for (int j = task.Result[i].MediaCollection.Count - 1; j >= 0; j--)
-                    {
-                        if (task.Result[i].MediaCollection[j].Name.Equals(md.Name))
-                        {
-                            task.Result[i].MediaCollection.RemoveAt(j);
-                            flag = true;
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }   
-          if (!flag)
-            {
-                return true;
-            }
-            else
-            {
-                return await SaveAllPlaylists(task);
-            }
+            //  var task = await LoadAllPlaylists();
+            //  bool flag = false;
+            //  for (int i = task.Result.Count - 1; i >= 0; i--)
+            //  {
+            //      if (task.Result[i].Name.Equals(pl.Name))
+            //      {
+            //          for (int j = task.Result[i].MediaCollection.Count - 1; j >= 0; j--)
+            //          {
+            //              if (task.Result[i].MediaCollection[j].Name.Equals(md.Name))
+            //              {
+            //                  task.Result[i].MediaCollection.RemoveAt(j);
+            //                  flag = true;
+            //                  break;
+            //              }
+            //          }
+            //          break;
+            //      }
+            //  }   
+            //if (!flag)
+            //  {
+            //      return true;
+            //  }
+            //  else
+            //  {
+            //      return await SaveAllPlaylists(task);
+            //  }
 
+            return true;
         }
     }
-
-   
 }
 

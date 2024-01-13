@@ -37,33 +37,35 @@ namespace MyMediaProject.Pages
     public sealed partial class MusicPage : Page
     {
         private DataServices _dataServices;
+        private MediaPlaybackList _mediaPlaybackList;
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
-        public static MusicPage Current { get; private set; }
-
-        private int[] shuffledPlaylist;
-        private int currentMediaIndex;
 
         public MusicPage(Playlist playlist)
         {
             this.InitializeComponent();
             DisplayPlaylist = playlist;
             _dataServices = new DataServices();
-            Current = this;
-            // Initialize MediaCollection if it's null
+            _mediaPlaybackList = new MediaPlaybackList();
 
-            NavigationPage.MainMediaPlayerElement.MediaPlayer.MediaEnded += MediaPlayerElement_MediaEnded;
-            shuffledPlaylist = new int[DisplayPlaylist.MediaCollection.Count];
+            // Init MediaPlayBackList
+            for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++) 
+            {
+                _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(DisplayPlaylist.MediaCollection[i].Uri)));
+            }
+            _mediaPlaybackList.ShuffleEnabled = false;
+            NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
         }
         
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = this;
         }
+
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            Current = null;
         }
+
         private async void AddFile_Button(object sender, RoutedEventArgs e)
         {
             await SetLocalMedia();
@@ -72,7 +74,6 @@ namespace MyMediaProject.Pages
 
         private async void SavePlayList_Click(object sender, RoutedEventArgs e)
         { 
-
             //var savePicker = new Windows.Storage.Pickers.FileSavePicker();
             //savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.MusicLibrary;
             //savePicker.FileTypeChoices.Add("Playlist", new List<string>() { ".txt" });
@@ -82,6 +83,7 @@ namespace MyMediaProject.Pages
             //{
             //    
             //});
+
             await SaveLocalMedia();
         }
 
@@ -107,61 +109,23 @@ namespace MyMediaProject.Pages
 
         }
 
-        private async void ShuffleAndPlayClick(object sender, RoutedEventArgs e)
+        private void ShuffleAndPlayClick(object sender, RoutedEventArgs e)
         {
-            if (DisplayPlaylist.MediaCollection.Any())
+            if (!_mediaPlaybackList.ShuffleEnabled)
             {
-                //shuffledPlaylist = Enumerable.Range(0, DisplayPlaylist.MediaCollection.Count).ToArray();
-
-    
-                //Random random = new Random();
-                //int n = shuffledPlaylist.Length;
-                //while (n > 1)
-                //{
-                //    n--;
-                //    int k = random.Next(n + 1);
-                //    int value = shuffledPlaylist[k];
-                //    shuffledPlaylist[k] = shuffledPlaylist[n];
-                //    shuffledPlaylist[n] = value;
-                //}
-
-                //// Start playing the first media item
-                for (int i=0;i<DisplayPlaylist.MediaCollection.Count;i++)
-                {
-                    shuffledPlaylist[i] = DisplayPlaylist.MediaCollection.Count-i-1;
-                }
-                PlayCurrentMedia();
+                _mediaPlaybackList.ShuffleEnabled = true;
+                NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+                btnPlayWay.Content = "Sequence and play";
+            }
+            else
+            {
+                _mediaPlaybackList.ShuffleEnabled = false;
+                NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+                btnPlayWay.Content = "Shuffle and play";
             }
         }
 
-        private void PlayCurrentMedia()
-        {
-            try
-            {
-                // Dispose of the previous MediaSource
-                NavigationPage.MainMediaPlayerElement.Source = null;
 
-                // Set the new MediaSource
-                NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(DisplayPlaylist.MediaCollection[currentMediaIndex].Uri);
-                NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
-            }
-            catch (Exception ex)
-            {
-                // Handle or log the exception
-                Debug.WriteLine($"Exception: {ex.Message}");
-            }
-        }
-        private void MediaPlayerElement_MediaEnded(MediaPlayer sender, object args)
-        {
-            // Move to the next media in the shuffled playlist
-            currentMediaIndex++;
-
-            // If there are more media to play, play the next one
-            if (currentMediaIndex < shuffledPlaylist.Length)
-            {
-                PlayCurrentMedia();
-            }
-        }
 
         async private System.Threading.Tasks.Task SetLocalMedia()
         {
@@ -217,7 +181,6 @@ namespace MyMediaProject.Pages
                     }
                     else
                     {
-
                         var mediaProperties = await file.Properties.GetVideoPropertiesAsync();
                         duration = mediaProperties.Duration.ToString();
                         int dot_c = duration.IndexOf(".");
@@ -237,8 +200,10 @@ namespace MyMediaProject.Pages
 
                             DisplayPlaylist.MediaCollection.Add(new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = string.Join(",", mediaProperties.Directors), Length = duration, Uri = fileUri });
                         }
-                        //DisplayPlaylist.MediaCollection.Add(new Media() { No = DisplayPlaylist.MediaCollection.Count + 1, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = string.Join(",", mediaProperties.Directors) ,Length=mediaProperties.Duration.ToString(), Uri = fileUri });
+
                     }
+
+                    _mediaPlaybackList.Items.Add(new MediaPlaybackItem (MediaSource.CreateFromUri(fileUri)));
 
                     //DisplayPlaylist.MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = file.Name });
                     //playlist.Items.Add(file.Name);
@@ -254,51 +219,41 @@ namespace MyMediaProject.Pages
 
         private async void Handle_DoubleTapped(object sender, RoutedEventArgs e)
         {
-            var selectedMedia = (Media)CustomersDataGrid.SelectedItem;
-            string extension = Path.GetExtension(selectedMedia.Name);
-
-          
-                //if (selectedMedia != null)
-                //{
-                //    if (extension == ".mp4" || extension == ".wmv")
-                //    {
-                //        // Get the StorageFile from the Uri
-
-                //        var subWindow = new Window();
-                //        var videoPage = new VideoPage(videoFile);
-                //        subWindow.Content = videoPage;
-                //        subWindow.Activate();
-                //    }
-                //    else
-                //    {
-                //        NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(selectedMedia.Uri);
-                //        NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
-                //    }
-                //}
+            string extension = Path.GetExtension(SelectedMedia.Name);
             
+            // Find index of selected media
+            int index;
+            for (index = 0; index < _mediaPlaybackList.Items.Count; index++) 
+            {
+                if (_mediaPlaybackList.Items[index].Source.Uri.Equals(SelectedMedia.Uri)) 
+                {
+                    break;
+                }
+            }
 
-            //Debug.WriteLine(selectedMedia.Uri);
-            if (selectedMedia!=null)
+
+            if (SelectedMedia != null)
             {
                 if (extension == ".mp4" || extension == ".wmv")
                 {
-                    StorageFile videoFile = await StorageFile.GetFileFromPathAsync(selectedMedia.Uri.LocalPath);
+                    _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
+                    NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
 
+                    StorageFile videoFile = await StorageFile.GetFileFromPathAsync(SelectedMedia.Uri.LocalPath);
                     var subWindow = new Window();
                     var videoPage = new VideoPage(videoFile);
                     subWindow.Content = videoPage;
-                    subWindow.Title= selectedMedia.Name;
+                    subWindow.Title= SelectedMedia.Name;
                     subWindow.Activate();
                 }
                 else
                 {
-                    NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(selectedMedia.Uri);
+                    _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
+                    NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
                 }
             
             }
-        
-
         }
     }
 }

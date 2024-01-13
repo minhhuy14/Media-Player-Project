@@ -35,16 +35,6 @@ namespace MyMediaProject
         public NavigationPage()
         {
             this.InitializeComponent();
-            if (MusicPage.Current == null)
-            {
-                // Initialize MusicPage.Current here
-            }
-            else
-            if (MusicPage.Current.DisplayPlaylist == null)
-            {
-                // Initialize MusicPage.Current.DisplayPlaylist here
-            }
-            else displayPlaylist = MusicPage.Current.DisplayPlaylist;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

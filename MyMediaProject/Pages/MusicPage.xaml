@@ -31,17 +31,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Click="AddFile_Button" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
-            <Button Grid.Column="2"  Click="SavePlayList_Click" Content="Save Play list" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
 
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add files" Click="AddFile_Button" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 10 0"></Button>
+                <Button Content="Save Playlist" Click="SavePlayList_Click" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            </StackPanel>
       </Grid>
 
-        <Button Grid.Row="1" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"  HorizontalAlignment="Left" Click="ShuffleAndPlayClick"></Button>
+        <Button Name="btnPlayWay" Grid.Row="1" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"  HorizontalAlignment="Left" Click="ShuffleAndPlayClick"></Button>
 
         <StackPanel Grid.Row="2" Margin="0 0 0 20" Orientation="Horizontal" HorizontalAlignment="Left">
             <AppBarButton Icon="Delete" Label="Clear" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>

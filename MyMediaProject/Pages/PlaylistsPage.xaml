@@ -29,7 +29,6 @@
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Create Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="CreatePlayList" Margin="0 0 10 0"></Button>
                 <Button Content="Remove Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="RemovePlayList"></Button>
-
           </StackPanel>
         </Grid>
 
