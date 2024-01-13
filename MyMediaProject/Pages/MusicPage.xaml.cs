@@ -45,12 +45,10 @@ namespace MyMediaProject.Pages
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
 
-<<<<<<< HEAD
         private ObservableCollection<Media> _recentMedias;
-=======
+
         public event PropertyChangedEventHandler PropertyChanged;
 
->>>>>>> origin/Dat_Branch
 
         public MusicPage(Playlist playlist)
         {
@@ -86,16 +84,7 @@ namespace MyMediaProject.Pages
 
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
            
-=======
-            var flagResult = await _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
-
-            if (!flagResult)
-            {
-                await App.MainRoot.ShowDialog("Error", "Saving recent media failed!");
-            }
->>>>>>> origin/Dat_Branch
         }
 
         private async void AddFiles_Button(object sender, RoutedEventArgs e)
@@ -178,7 +167,7 @@ namespace MyMediaProject.Pages
             if (!_mediaPlaybackList.ShuffleEnabled)
             {
                 _mediaPlaybackList.ShuffleEnabled = true;
-                _mediaPlaybackList.SetShuffledItems(Shuffle(_mediaPlaybackList.Items.ToList<MediaPlaybackItem>()));
+                _mediaPlaybackList.SetShuffledItems(Shuffle(_mediaPlaybackList.Items.ToList()));
                 NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                 btnPlayWay.Content = "Sequence and play";
                 NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
@@ -230,33 +219,19 @@ namespace MyMediaProject.Pages
                             duration = duration.Substring(0, dot_c);
                         }
 
-                        if (currentNumItems == 0)
-                        {
-                            md = new  Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                        //if (currentNumItems == 0)
+                        //{
 
-                            DisplayPlaylist.MediaCollection.Add(md);
-<<<<<<< HEAD
-                   
+                        //}
+                        //else
+                        //{
+                        //    md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                        //    index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
+                        //    DisplayPlaylist.MediaCollection.Add(md);
+                        //}
+                         md = new  Media() { No = currentNumItems+1, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                           DisplayPlaylist.MediaCollection.Add(md);
 
-=======
-                            
-                            //Add to recent playlist
-                            NavigationPage.RecentMedia.Enqueue(md);
->>>>>>> origin/Dat_Branch
-                        }
-                        else
-                        {
-                            md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
-                            index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
-                            DisplayPlaylist.MediaCollection.Add(md);
-                           
-<<<<<<< HEAD
-
-=======
-                            //Add to recent playlist
-                            NavigationPage.RecentMedia.Enqueue(md);
->>>>>>> origin/Dat_Branch
-                        }
 
                         _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                     }
@@ -265,16 +240,8 @@ namespace MyMediaProject.Pages
                         await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                         continue;
                     }
-<<<<<<< HEAD
-
-                    _mediaPlaybackList.Items.Add(new MediaPlaybackItem (MediaSource.CreateFromUri(fileUri)));
-                
-                
                 }
             
-=======
-                }
->>>>>>> origin/Dat_Branch
             }
         }
 
@@ -297,22 +264,15 @@ namespace MyMediaProject.Pages
                 {
                     _mediaPlaybackList.MoveTo((uint)index);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                    _recentMedias.Add(SelectedMedia);
+                    await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentOnPlaylists.txt");
 
-                    //Add to recent playlist
-                    NavigationPage.RecentMedia.Enqueue(SelectedMedia);
+
                 }
                 else
                 { 
                     await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
-<<<<<<< HEAD
-                //Add to recent playlist
-                _recentMedias.Add(SelectedMedia);
-                await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentOnPlaylists.txt");
-
-
-=======
->>>>>>> origin/Dat_Branch
             }
         }
 

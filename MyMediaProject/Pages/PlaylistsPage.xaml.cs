@@ -104,9 +104,12 @@ namespace MyMediaProject.Pages
             Playlists.Clear();
 
             var task = await _dataServices.LoadAllPlaylists();
-            for (int i = 0; i < task.Count; i++)
+            if (task != null)
             {
-                Playlists.Add(task[i]);
+                for (int i = 0; i < task.Count; i++)
+                {
+                    Playlists.Add(task[i]);
+                }
             }
         }
 

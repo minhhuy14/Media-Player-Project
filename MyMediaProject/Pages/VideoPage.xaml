@@ -13,8 +13,11 @@
         <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     AreTransportControlsEnabled="True">
             <MediaPlayerElement.TransportControls>
-                <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-               IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
+                <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" IsRepeatButtonVisible="True" IsRepeatEnabled="True"
+                                        IsNextTrackButtonVisible="true"   
+                                        IsPreviousTrackButtonVisible="true"  
+                                        IsPlaybackRateButtonVisible="True" 
+                                        IsPlaybackRateEnabled="True" />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
     </Grid>

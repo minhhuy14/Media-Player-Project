@@ -38,7 +38,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     ItemsSource="{Binding RecentMedia , Mode=OneWay}"
                     SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
-                    SelectionChanged="ItemMedia_Click"
+                    DoubleTapped="ItemMedia_DoubleClick"
                     HorizontalAlignment="Center" VerticalAlignment="Stretch">
                     <GridView.ItemTemplate>
                         <DataTemplate>

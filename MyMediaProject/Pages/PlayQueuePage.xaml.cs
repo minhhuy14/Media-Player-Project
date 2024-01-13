@@ -49,7 +49,7 @@ namespace MyMediaProject.Pages
         private async void LoadPlayList_Click(object sender, RoutedEventArgs e)
         {
             await SetLocalPlayList();
-             NavigationPage.NVMain.Content = new MusicPage(DisplayPlaylist);
+            NavigationPage.NVMain.Content = new MusicPage(DisplayPlaylist);
 
         }
 
@@ -113,12 +113,8 @@ namespace MyMediaProject.Pages
                         continue;
                     }
 
-<<<<<<< HEAD
                     _recentMedias.Add(md);
 
-=======
-                    NavigationPage.RecentMedia.Enqueue(md);
->>>>>>> origin/Dat_Branch
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                 }
             }
@@ -173,15 +169,11 @@ namespace MyMediaProject.Pages
                     _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
                     NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
-
-                    //Add to recent playlist
-                    NavigationPage.RecentMedia.Enqueue(SelectedMedia);
                 }
                 else
                 {
                     await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
-<<<<<<< HEAD
 
                 //Add to recent playlist
                 _recentMedias.Add(SelectedMedia);
@@ -189,8 +181,6 @@ namespace MyMediaProject.Pages
                 await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentQueue.txt");
 
 
-=======
->>>>>>> origin/Dat_Branch
             }
         }
         private async void RemoveMedia_Click(object sender, RoutedEventArgs e)

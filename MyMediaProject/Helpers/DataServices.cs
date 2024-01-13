@@ -146,7 +146,13 @@ namespace MyMediaProject.Helpers
         {
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("playlist.txt");
-            //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlist.txt");
+
+            if (item == null)
+            {
+                // file is not existed;
+                return null;                
+            }
+
             Windows.Storage.StorageFile sampleFile = (Windows.Storage.StorageFile)item;
 
             //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("rencentPlayed.txt");
@@ -155,8 +161,6 @@ namespace MyMediaProject.Helpers
                 return null;
             }
            
-           
-          
             var content = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
             if (string.IsNullOrEmpty(content))
             {
@@ -188,7 +192,6 @@ namespace MyMediaProject.Helpers
         }
        public async Task<bool> SaveRecentPlay(List<Media> recentlist,string filename)
         {
-            var distinctList = recentlist.Distinct().ToList();
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync(filename, Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
@@ -197,17 +200,18 @@ namespace MyMediaProject.Helpers
                 return false;
             }
             StringBuilder sb = new StringBuilder();
-            if (distinctList.Count > 0)
-            { 
-                sb.AppendLine(distinctList.Count.ToString()); 
-            
+
+            if (recentlist.Count > 0)
+            {
+                sb.AppendLine(recentlist.Count.ToString());
+
             }
             else
             {
-                return false;
+                return true;
             }
 
-            foreach (var media in distinctList)
+            foreach (var media in recentlist)
             {
                
                     sb.AppendLine(media.Name);
