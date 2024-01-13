@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 using MyMediaProject.Models;
 using MyMediaProject.Pages;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,12 +30,15 @@ namespace MyMediaProject
         public static Frame NVMain { get; private set; }
         public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
-        public Playlist displayPlaylist; 
+
+        public static Queue<Media> RecentMedia { get; set; } 
+        
 
         private int currentMediaIndex = 0;
         public NavigationPage()
         {
             this.InitializeComponent();
+            RecentMedia = new Queue<Media>();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -69,28 +73,7 @@ namespace MyMediaProject
                 }
             }
         }
-        private async void  PreviousButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (currentMediaIndex > 0)
-            {
-                currentMediaIndex--;
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
-                mediaPlayerElement.MediaPlayer.Play();
-            }
-        }
-        private void PlayNextMedia()
-        {
-            if (currentMediaIndex < displayPlaylist.MediaCollection.Count - 1)
-            {
-                currentMediaIndex++;
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
-                mediaPlayerElement.MediaPlayer.Play();
-            }
-        }
-        private void NextButtonClick(object sender, RoutedEventArgs e)
-        {
-            PlayNextMedia();
-        }
+       
        
     }
 }

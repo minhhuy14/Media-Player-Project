@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
+    Unloaded="Page_UnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="40 40 40 0">
@@ -24,7 +25,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="Home" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Open files" Click ="Button_Click" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            <Button Grid.Column="1" Content="Open files" Click ="OpenFile_Click" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
         </Grid>
 
         <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
@@ -37,6 +38,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     ItemsSource="{Binding MediaCollection, Mode=OneWay}"
                     SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
+                    SelectionChanged="ItemMedia_Click"
                     HorizontalAlignment="Center" VerticalAlignment="Stretch">
                     <GridView.ItemTemplate>
                         <DataTemplate>
@@ -48,7 +50,7 @@
                                     HorizontalAlignment="Stretch" 
                                     VerticalAlignment="Stretch">
                                     <Image Width="150" Height="150" 
-                                        Source="{Binding Image}"/>
+                                        Source="{Binding ImageBitmap}" Stretch="UniformToFill"/>
                                 </Border>
                                 <TextBlock Margin="5 5 0 0" TextWrapping="Wrap" HorizontalTextAlignment="Left">
                                     <Run Text="{Binding Name}" FontWeight="Bold"/>

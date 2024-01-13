@@ -33,7 +33,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold"></TextBlock>
+            <TextBlock Grid.Column="0" Text="Playlist Name: " FontSize="25" FontWeight="Bold"><Run FontStyle="Italic" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}"></Run></TextBlock>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Add files" Click="AddFile_Button" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 10 0"></Button>
@@ -44,7 +44,7 @@
         <Button Name="btnPlayWay" Grid.Row="1" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"  HorizontalAlignment="Left" Click="ShuffleAndPlayClick"></Button>
 
         <StackPanel Grid.Row="2" Margin="0 0 0 20" Orientation="Horizontal" HorizontalAlignment="Left">
-            <AppBarButton Icon="Delete" Label="Clear" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
+            <AppBarButton Icon="Delete" Label="Remove" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1" Click="RemoveMedia_Click"></AppBarButton>
             <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1" Click="AddFile_Button"></AppBarButton>
         </StackPanel>
 

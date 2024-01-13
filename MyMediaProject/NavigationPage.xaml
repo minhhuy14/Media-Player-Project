@@ -27,14 +27,8 @@
                     <RowDefinition Height="Auto"></RowDefinition>
 
                 </Grid.RowDefinitions>
-                
-                <Frame Grid.Row="0" x:Name="contentFrame"/>
 
-
-
-                <Button Click="PreviousButtonClick" Grid.Row="1" HorizontalAlignment="Left" Margin="0, 0, 20, 0">
-                    <FontIcon Glyph="&#xE892;"/>
-                </Button>
+                <Frame Grid.Row="0" x:Name="contentFrame"></Frame>
 
                 <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         AreTransportControlsEnabled="True">
@@ -47,10 +41,6 @@
                     </MediaPlayerElement.TransportControls>
                 </MediaPlayerElement>
 
-                <Button Click="NextButtonClick" Grid.Row="1" HorizontalAlignment="Right" Margin="20, 0, 0, 0" >
-                    <FontIcon Glyph="&#xE893;"/>
-                </Button>
-                
                 <!--<MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                     AreTransportControlsEnabled="True">
                     <MediaPlayerElement.TransportControls>
