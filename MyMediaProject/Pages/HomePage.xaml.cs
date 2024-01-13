@@ -40,31 +40,75 @@ namespace MyMediaProject.Pages
         // To Test HomePage
         public ObservableCollection<Media> MediaCollection { get; set; }
         public Media SelectedMedia { get; set; }
+
+        public static ObservableCollection<Media> RecentMedia { get; set; }
         public HomePage()
         {
             this.InitializeComponent();
 
             MediaCollection = new ObservableCollection<Media>();
             _dataServices = new DataServices();
+            RecentMedia = new ObservableCollection<Media>();
+            LoadRecentMedia();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            List<Media> res= await _dataServices.LoadRecentMedia();
-            if (res!=null)
-            {
-                foreach (var item in res)
-                {
-                    item.Image = "/Assets/PlaylistLogo.jpg";
-                    item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
-                    MediaCollection.Add(item);
+            //List<Media> res= await _dataServices.LoadRecentMedia();
+            
+            //if (res!=null)
+            //{
+            //    foreach (var item in res)
+            //    {
+                    
+            //        item.Image = "/Assets/PlaylistLogo.jpg";
+            //        item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
+            //        MediaCollection.Add(item);
 
-                }
-            }
+            //    }
+            //}
             
            
             DataContext = this;
+        }
+        private async void LoadRecentMedia()
+        {
+            RecentMedia.Clear();
+            var task1 = await _dataServices.LoadRecentMedia("recentPlayed.txt");
+            var task2 = await _dataServices.LoadRecentMedia("recentQueue.txt");
+            var task3 = await _dataServices.LoadRecentMedia("recentOnPlaylists.txt");
+
+            // Combine the two lists and remove duplicates
+            var combinedList = new HashSet<Media>();
+            if (task1 != null)
+            {
+                foreach (var item in task1)
+                {
+                    combinedList.Add(item);
+                }
+            }
+            if (task2 != null)
+            {
+                foreach (var item in task2)
+                {
+                    combinedList.Add(item);
+                }
+            }
+            if (task3 != null)
+            {
+                foreach (var item in task3)
+                {
+                    combinedList.Add(item);
+                }
+            }
+
+            foreach (var item in combinedList)
+            {
+                item.Image = "/Assets/PlaylistLogo.jpg";
+                item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
+                RecentMedia.Add(item);
+            }
         }
 
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -86,24 +130,6 @@ namespace MyMediaProject.Pages
             openPicker.FileTypeFilter.Add(".wma");
             openPicker.FileTypeFilter.Add(".mp3");
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwd);
-
-            //var files = await openPicker.PickMultipleFilesAsync();
-
-            //// mediaPlayerElement is a MediaPlayerElement control defined in XAML
-            //if (files.Count > 0)
-            //{
-            //    foreach (var file in files)
-            //    {
-            //        Uri fileUri = new Uri(file.Path);
-            //        mediaPlaylist.Add(fileUri);
-            //        //playlist.Items.Add(file.Name);
-            //    }
-            //    mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-            //    mediaPlayerElement.MediaPlayer.Play();
-
-            //mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(file);
-
-            //mediaPlayerElement.MediaPlayer.Play();
 
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
@@ -136,8 +162,10 @@ namespace MyMediaProject.Pages
                     Image = "/Assets/PlaylistLogo.jpg",
                     ImageBitmap = await _dataServices.GetThumbnailAsync(fileUri)
                 };
+                //Add to recent playlist
+                RecentMedia.Add(media);
 
-                NavigationPage.RecentMedia.Enqueue(media);
+       
 
             }
 
@@ -170,7 +198,7 @@ namespace MyMediaProject.Pages
         }
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
+            await _dataServices.SaveRecentPlay(RecentMedia.ToList(),"recentPlayed.txt");
         }
     }
 }

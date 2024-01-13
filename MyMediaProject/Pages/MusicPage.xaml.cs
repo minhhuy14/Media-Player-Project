@@ -41,12 +41,15 @@ namespace MyMediaProject.Pages
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
 
+        private ObservableCollection<Media> _recentMedias;
+
         public MusicPage(Playlist playlist)
         {
             this.InitializeComponent();
             DisplayPlaylist = playlist;
             _dataServices = new DataServices();
             _mediaPlaybackList = new MediaPlaybackList();
+            _recentMedias = new ObservableCollection<Media>();
 
             // Init MediaPlayBackList
             for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++) 
@@ -64,7 +67,7 @@ namespace MyMediaProject.Pages
 
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
+           
         }
 
         private async void AddFile_Button(object sender, RoutedEventArgs e)
@@ -217,17 +220,16 @@ namespace MyMediaProject.Pages
                            md=new  Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
 
                             DisplayPlaylist.MediaCollection.Add(md);
-                            //Add to recent playlist
+                   
 
-                            NavigationPage.RecentMedia.Enqueue(md);
                         }
                         else
                         {
                             md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
                             index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
                             DisplayPlaylist.MediaCollection.Add(md);
-                            //Add to recent playlist
-                            NavigationPage.RecentMedia.Enqueue(md);
+                           
+
                         }
                         //DisplayPlaylist.MediaCollection.Add(new Media() { No = DisplayPlaylist.MediaCollection.Count + 1 , Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, 
                         //Length = mediaProperties.Duration.ToString(),Uri=fileUri });    
@@ -258,15 +260,9 @@ namespace MyMediaProject.Pages
 
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem (MediaSource.CreateFromUri(fileUri)));
                 
-                    //DisplayPlaylist.MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = file.Name });
-                    //playlist.Items.Add(file.Name);
+                
                 }
-                //mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-                //mediaPlayerElement.MediaPlayer.Play();
-
-                //mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(file);
-
-                //mediaPlayerElement.MediaPlayer.Play();
+            
             }
         }
 
@@ -305,8 +301,10 @@ namespace MyMediaProject.Pages
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
                 }
                 //Add to recent playlist
-                NavigationPage.RecentMedia.Enqueue(SelectedMedia);
-                
+                _recentMedias.Add(SelectedMedia);
+                await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentOnPlaylists.txt");
+
+
             }
         }
     

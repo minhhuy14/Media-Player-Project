@@ -145,12 +145,24 @@ namespace MyMediaProject.Helpers
         public async Task<List<Playlist>> LoadAllPlaylists()
         {
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlist.txt");
+            Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("playlist.txt");
+            //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlist.txt");
+            Windows.Storage.StorageFile sampleFile = (Windows.Storage.StorageFile)item;
+
+            //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("rencentPlayed.txt");
             if (!sampleFile.IsAvailable)
             {
                 return null;
             }
+           
+           
+          
             var content = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+            if (string.IsNullOrEmpty(content))
+            {
+                // The content of the file is empty
+                return null;
+            }
             var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             int count = int.Parse(lines[0]);
             List<Playlist> playlists = new List<Playlist>();
@@ -174,20 +186,28 @@ namespace MyMediaProject.Helpers
             }
             return playlists;
         }
-       public async Task<bool> SaveRecentPlay(Queue<Media> recentlist)
+       public async Task<bool> SaveRecentPlay(List<Media> recentlist,string filename)
         {
-
+            var distinctList = recentlist.Distinct().ToList();
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("rencentPlayed.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync(filename, Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
             if (!sampleFile.IsAvailable)
             {
                 return false;
             }
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(recentlist.Count.ToString());
+            if (distinctList.Count > 0)
+            { 
+                sb.AppendLine(distinctList.Count.ToString()); 
+            
+            }
+            else
+            {
+                return false;
+            }
 
-            foreach (var media in recentlist)
+            foreach (var media in distinctList)
             {
                
                     sb.AppendLine(media.Name);
@@ -202,9 +222,9 @@ namespace MyMediaProject.Helpers
             return true;
         }
 
-        public async Task<List<Media>> LoadRecentMedia() {             
+        public async Task<List<Media>> LoadRecentMedia(string filename) {             
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("rencentPlayed.txt");
+            Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync(filename);
             if (item == null)
             {
                 // File does not exist
