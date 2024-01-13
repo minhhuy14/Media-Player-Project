@@ -169,7 +169,7 @@ namespace MyMediaProject.Pages
             if (!_mediaPlaybackList.ShuffleEnabled)
             {
                 _mediaPlaybackList.ShuffleEnabled = true;
-                _mediaPlaybackList.SetShuffledItems(Shuffle(_mediaPlaybackList.Items.ToList<MediaPlaybackItem>()));
+                _mediaPlaybackList.SetShuffledItems(Shuffle(_mediaPlaybackList.Items.ToList()));
                 NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                 btnPlayWay.Content = "Sequence and play";
                 NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
