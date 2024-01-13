@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -167,10 +168,8 @@ namespace MyMediaProject.Pages
         {
             if (!_mediaPlaybackList.ShuffleEnabled)
             {
-                
                 _mediaPlaybackList.ShuffleEnabled = true;
-                _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[_mediaPlaybackList.Items.Count - 1];
-
+                _mediaPlaybackList.SetShuffledItems(Shuffle(_mediaPlaybackList.Items.ToList<MediaPlaybackItem>()));
                 NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                 btnPlayWay.Content = "Sequence and play";
                 NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
@@ -179,7 +178,6 @@ namespace MyMediaProject.Pages
             else
             {
                 _mediaPlaybackList.ShuffleEnabled = false;
-                _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[0];
                 NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                 btnPlayWay.Content = "Shuffle and play";
                 NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
@@ -281,6 +279,25 @@ namespace MyMediaProject.Pages
                     await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
             }
+        }
+
+        public IList<T> Shuffle<T>(IList<T> list)
+        {
+            RandomNumberGenerator provider = RandomNumberGenerator.Create();
+            int n = list.Count;
+            while (n > 1)
+            {
+                byte[] box = new byte[1];
+                do provider.GetBytes(box);
+                while (!(box[0] < n * (Byte.MaxValue / n)));
+                int k = (box[0] % n);
+                n--;
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+
+            return list;
         }
     }
 }

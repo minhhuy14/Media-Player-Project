@@ -34,8 +34,10 @@
                         AreTransportControlsEnabled="True">
                     <MediaPlayerElement.TransportControls>
                         <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-                                    IsPlaybackRateButtonVisible="True" 
-                                    IsPlaybackRateEnabled="True"
+                                                IsRepeatButtonVisible="True"
+                                                IsRepeatEnabled="True"
+                                                IsPlaybackRateButtonVisible="True" 
+                                                IsPlaybackRateEnabled="True"
                                                 IsNextTrackButtonVisible="True"
                                                 IsPreviousTrackButtonVisible="True"/>
                     </MediaPlayerElement.TransportControls>
