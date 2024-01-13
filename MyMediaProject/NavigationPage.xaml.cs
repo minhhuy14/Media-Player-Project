@@ -62,6 +62,10 @@ namespace MyMediaProject
                 {
                     contentFrame.Content = new HomePage();
                 }
+                else if (selectedItemTag.Equals("Videos"))
+                {
+                    contentFrame.Content = new VideosPage();
+                }
                 else if (selectedItemTag.Equals("Play queue"))
                 {
                     contentFrame.Content = new PlayQueuePage();

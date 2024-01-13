@@ -59,7 +59,6 @@ namespace MyMediaProject.Pages
                     item.Image = "/Assets/PlaylistLogo.jpg";
                     item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
                     MediaCollection.Add(item);
-
                 }
             }
             
@@ -87,38 +86,15 @@ namespace MyMediaProject.Pages
             openPicker.FileTypeFilter.Add(".mp3");
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwd);
 
-            //var files = await openPicker.PickMultipleFilesAsync();
-
-            //// mediaPlayerElement is a MediaPlayerElement control defined in XAML
-            //if (files.Count > 0)
-            //{
-            //    foreach (var file in files)
-            //    {
-            //        Uri fileUri = new Uri(file.Path);
-            //        mediaPlaylist.Add(fileUri);
-            //        //playlist.Items.Add(file.Name);
-            //    }
-            //    mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-            //    mediaPlayerElement.MediaPlayer.Play();
-
-            //mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(file);
-
-            //mediaPlayerElement.MediaPlayer.Play();
-
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {
                 var extension = Path.GetExtension(file.Name);
                 Uri fileUri = new Uri(file.Path);
 
-             
-
                 if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                 {
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(file);
-                    subWindow.Content = videoPage;
-                    subWindow.Activate();
+                    CreateSubVideoPage(file);
                 }
                 else 
                 {
@@ -138,9 +114,7 @@ namespace MyMediaProject.Pages
                 };
 
                 NavigationPage.RecentMedia.Enqueue(media);
-
             }
-
         }
         private async void ItemMedia_Click(object sendr, RoutedEventArgs e)
         {
@@ -153,24 +127,43 @@ namespace MyMediaProject.Pages
 
                 if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                 {
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(file);
-                    subWindow.Content = videoPage;
-                    subWindow.Activate();
+                    CreateSubVideoPage(file);
                 }
                 else
                 {
                     mediaPlaylist.Add(fileUri);
-                    //playlist.Items.Add(file.Name);
                     NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
                 }
-
             }
         }
+
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
+            var flagResult = await _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
+            if (!flagResult)
+            {
+                await App.MainRoot.ShowDialog("Error", "Saving recent files failed!");
+            }
+        }
+
+        private void CreateSubVideoPage(StorageFile file)
+        {
+            var subWindow = new Window();
+            var videoPage = new VideoPage(file);
+            subWindow.Content = videoPage;
+            subWindow.Activate();
+
+            subWindow.Closed += (sender, e) =>
+            {
+                subWindow.Content = null;
+
+                if (videoPage != null)
+                {
+                    videoPage.Dispose();
+                    videoPage = null;
+                }
+            };
         }
     }
 }

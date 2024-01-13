@@ -7,63 +7,66 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Unloaded="Page_UnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="40 40 40 0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-        </Grid.RowDefinitions>
+         <Grid.RowDefinitions>
+             <RowDefinition Height="Auto"></RowDefinition>
+             <RowDefinition Height="Auto"></RowDefinition>
+             <RowDefinition Height="1*"></RowDefinition>
+         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0 0 0 20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+         <Grid Grid.Row="0" Margin="0 0 0 20">
+             <Grid.ColumnDefinitions>
+                 <ColumnDefinition></ColumnDefinition>
+                 <ColumnDefinition></ColumnDefinition>
 
-            </Grid.ColumnDefinitions>
+             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Videos" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
-        </Grid>
+             <TextBlock Grid.Column="0" Text="Videos" FontSize="25" FontWeight="Bold"></TextBlock>
+             <Button Grid.Column="1" Content="Add files" Click ="AddFiles_Click" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+         </Grid>
 
-        <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
+         <TextBlock Grid.Row="1" Text="Recent media" FontSize="15" FontWeight="Bold" Margin="0 0 0 20"/>
 
         <Grid Grid.Row="2" Margin="0 0 0 20">
             <ScrollView HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" VerticalScrollChainMode="Always">
                 <GridView  
-                 x:Name="MediaGridView"
-                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                 ItemsSource="{Binding MediaCollection, Mode=OneWay}"
-                 SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
-                 HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                     x:Name="MediaGridView"
+                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                     ItemsSource="{Binding MediaCollection, Mode=OneWay}"
+                     SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
+                     SelectionChanged="ItemMedia_Click"
+                     HorizontalAlignment="Center" VerticalAlignment="Stretch">
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical" Width="150" Height="200" Margin="10">
                                 <Border 
-                                 BorderBrush="LightGray"
-                                 BorderThickness="1"
-                                 CornerRadius="10"
-                                 HorizontalAlignment="Stretch" 
-                                 VerticalAlignment="Stretch">
+                                     BorderBrush="LightGray"
+                                     BorderThickness="1"
+                                     CornerRadius="10"
+                                     HorizontalAlignment="Stretch" 
+                                     VerticalAlignment="Stretch">
                                     <Image Width="150" Height="150" 
-                                     Source="{Binding Image}"/>
+                                         Source="{Binding ImageBitmap}" Stretch="UniformToFill"/>
                                 </Border>
                                 <TextBlock Margin="5 5 0 0" TextWrapping="Wrap" HorizontalTextAlignment="Left">
-                                 <Run Text="{Binding Name}" FontWeight="Bold"/>
+                                     <Run Text="{Binding Name}" FontWeight="Bold"/>
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </GridView.ItemTemplate>
 
                     <!--<GridView.ItemsPanel>
-                     <ItemsPanelTemplate>
-                         <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                               MaximumRowsOrColumns="5"
-                               Orientation="Horizontal"/>
-                     </ItemsPanelTemplate>
-                 </GridView.ItemsPanel>-->
+                         <ItemsPanelTemplate>
+                             <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                                   MaximumRowsOrColumns="5"
+                                   Orientation="Horizontal"/>
+                         </ItemsPanelTemplate>
+                     </GridView.ItemsPanel>-->
                 </GridView>
             </ScrollView>
         </Grid>

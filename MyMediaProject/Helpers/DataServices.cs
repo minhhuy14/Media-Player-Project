@@ -240,7 +240,68 @@ namespace MyMediaProject.Helpers
             }
             return medias;
         }
-       public async Task<BitmapImage> GetThumbnailAsync(Uri fileUri)
+
+        public async Task<bool> SaveAllVideos(List<Media> videoFiles)
+        {
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("videos.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
+            if (!sampleFile.IsAvailable)
+            {
+                return false;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(videoFiles.Count.ToString());
+
+            foreach (var media in videoFiles)
+            {
+                sb.AppendLine(media.Name);
+                sb.AppendLine(media.Uri.ToString());
+            }
+
+            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, sb.ToString());
+            return true;
+        }
+
+        public async Task<List<Media>> LoadAllVideo()
+        {
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("videos.txt");
+            if (item == null)
+            {
+                // File does not exist
+                return null;
+            }
+            Windows.Storage.StorageFile sampleFile = (Windows.Storage.StorageFile)item;
+
+            //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("rencentPlayed.txt");
+            if (!sampleFile.IsAvailable)
+            {
+                return null;
+            }
+            var content = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+            if (string.IsNullOrEmpty(content))
+            {
+                // The content of the file is empty
+                return null;
+            }
+            var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            int count = int.Parse(lines[0]);
+            List<Media> medias = new List<Media>();
+
+            int index = 1;
+            for (int i = 0; i < count; i++)
+            {
+                Media media = new Media();
+                media.Name = lines[index++];
+                media.Uri = new Uri(lines[index++]);
+                medias.Add(media);
+            }
+
+            return medias;
+        }
+
+        public async Task<BitmapImage> GetThumbnailAsync(Uri fileUri)
         {
             var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
             string extension = file.FileType;

@@ -13,7 +13,7 @@
     <Grid>
         <NavigationView x:Name="nvMain"
                         PaneDisplayMode="Left"
-                        IsBackEnabled="True"
+                        IsBackButtonVisible="Collapsed"
                         SelectionChanged="nvMain_SelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Tag="Home" Icon="Home" IsSelected="True" />
