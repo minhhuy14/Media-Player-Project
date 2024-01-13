@@ -63,12 +63,9 @@ namespace MyMediaProject.Pages
             var window = new Microsoft.UI.Xaml.Window();
             var hwd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
-            //WinRT.Interop.InitializeWithWindow.Initialize(openPicker, WinRT.Interop.WindowNative.GetWindowHandle(this));
             openPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
             openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.MusicLibrary;
 
-            openPicker.FileTypeFilter.Add(".wmv");
-            openPicker.FileTypeFilter.Add(".mp4");
             openPicker.FileTypeFilter.Add(".wma");
             openPicker.FileTypeFilter.Add(".mp3");
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwd);
@@ -109,35 +106,24 @@ namespace MyMediaProject.Pages
                             md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
                             DisplayPlaylist.MediaCollection.Add(md);
                         }
-                        //playlist.MediaCollection.Add(new Media() { No = playlist.MediaCollection.Count + 1 , Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, 
-                        //Length = mediaProperties.Duration.ToString(),Uri=fileUri });    
                     }
                     else
                     {
-                        var mediaProperties = await file.Properties.GetVideoPropertiesAsync();
-                        duration = mediaProperties.Duration.ToString();
-                        if (currentNumItems == 0)
-                        {
-                            index = 1;
-                            md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = string.Join(",", mediaProperties.Directors), Length = duration, Uri = fileUri };
-                            DisplayPlaylist.MediaCollection.Add(md);
-                        }
-                        else
-                        {
-                            index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
-                            md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = string.Join(",", mediaProperties.Directors), Length = duration, Uri = fileUri };
-                            DisplayPlaylist.MediaCollection.Add(md);
-
-                        }
+                        await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                        continue;
                     }
 
+<<<<<<< HEAD
                     _recentMedias.Add(md);
 
+=======
+                    NavigationPage.RecentMedia.Enqueue(md);
+>>>>>>> origin/Dat_Branch
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                 }
-                
             }
         }
+
         async private System.Threading.Tasks.Task SetLocalPlayList()
         {
             var window = new Microsoft.UI.Xaml.Window();
@@ -181,24 +167,21 @@ namespace MyMediaProject.Pages
                         break;
                     }
                 }
-                if (extension == ".mp4" || extension == ".wmv")
-                {
-                    _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
-                    NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
 
-                    StorageFile videoFile = await StorageFile.GetFileFromPathAsync(SelectedMedia.Uri.LocalPath);
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(videoFile);
-                    subWindow.Content = videoPage;
-                    subWindow.Title = SelectedMedia.Name;
-                    subWindow.Activate();
-                }
-                else
+                if (extension == ".mp3" || extension == ".wma")
                 {
                     _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
                     NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+
+                    //Add to recent playlist
+                    NavigationPage.RecentMedia.Enqueue(SelectedMedia);
                 }
+                else
+                {
+                    await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
+                }
+<<<<<<< HEAD
 
                 //Add to recent playlist
                 _recentMedias.Add(SelectedMedia);
@@ -206,6 +189,8 @@ namespace MyMediaProject.Pages
                 await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentQueue.txt");
 
 
+=======
+>>>>>>> origin/Dat_Branch
             }
         }
         private async void RemoveMedia_Click(object sender, RoutedEventArgs e)

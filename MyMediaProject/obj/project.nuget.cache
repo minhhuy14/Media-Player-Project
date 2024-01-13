@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "C1z3K/05P0xp/ny9SB85pRUotK/E2mZed+iwC6wWFn70D39Y7YzvBTDfQlcMQPkZdpa4PV2vA2Pns6JN/zOdIA==",
+  "dgSpecHash": "80U2RPh/g+OurYEPKjTlgd2YlknmdpMNo5g9FLshlhPEbiQ2g6IG4j9zS0c5stWzH2S/u5Kb7T/eXaQoLJwddw==",
   "success": true,
   "projectFilePath": "D:\\HK1 2023-2024\\WINDOWS\\MediaProject_1201\\MyMediaProject\\MyMediaProject\\MyMediaProject.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Users\\ADMIN\\.nuget\\packages\\communitytoolkit.winui.ui.controls.markdown\\7.1.2\\communitytoolkit.winui.ui.controls.markdown.7.1.2.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\communitytoolkit.winui.ui.controls.media\\7.1.2\\communitytoolkit.winui.ui.controls.media.7.1.2.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\communitytoolkit.winui.ui.controls.primitives\\7.1.2\\communitytoolkit.winui.ui.controls.primitives.7.1.2.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\fody\\6.6.4\\fody.6.6.4.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.graphics.win2d\\1.0.0.30\\microsoft.graphics.win2d.1.0.0.30.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
@@ -24,6 +25,7 @@
     "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.22621.755\\microsoft.windows.sdk.buildtools.10.0.22621.755.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.windowsappsdk\\1.4.230913002\\microsoft.windowsappsdk.1.4.230913002.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\propertychanged.fody\\4.1.0\\propertychanged.fody.4.1.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\runtime.any.system.collections\\4.3.0\\runtime.any.system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\runtime.any.system.diagnostics.tools\\4.3.0\\runtime.any.system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\runtime.any.system.diagnostics.tracing\\4.3.0\\runtime.any.system.diagnostics.tracing.4.3.0.nupkg.sha512",

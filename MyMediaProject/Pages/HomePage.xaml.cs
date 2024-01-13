@@ -55,59 +55,16 @@ namespace MyMediaProject.Pages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            //List<Media> res= await _dataServices.LoadRecentMedia();
-            
-            //if (res!=null)
-            //{
-            //    foreach (var item in res)
-            //    {
-                    
-            //        item.Image = "/Assets/PlaylistLogo.jpg";
-            //        item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
-            //        MediaCollection.Add(item);
-
-            //    }
-            //}
-            
-           
-            DataContext = this;
-        }
-        private async void LoadRecentMedia()
-        {
-            RecentMedia.Clear();
-            var task1 = await _dataServices.LoadRecentMedia("recentPlayed.txt");
-            var task2 = await _dataServices.LoadRecentMedia("recentQueue.txt");
-            var task3 = await _dataServices.LoadRecentMedia("recentOnPlaylists.txt");
-
-            // Combine the two lists and remove duplicates
-            var combinedList = new HashSet<Media>();
-            if (task1 != null)
+            List<Media> res= await _dataServices.LoadRecentMedia();
+            if (res!=null)
             {
-                foreach (var item in task1)
+                foreach (var item in res)
                 {
-                    combinedList.Add(item);
-                }
-            }
-            if (task2 != null)
-            {
-                foreach (var item in task2)
-                {
-                    combinedList.Add(item);
-                }
-            }
-            if (task3 != null)
-            {
-                foreach (var item in task3)
-                {
-                    combinedList.Add(item);
-                }
-            }
+                    item.Image = "/Assets/PlaylistLogo.jpg";
+                    item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
+                    MediaCollection.Add(item);
 
-            foreach (var item in combinedList)
-            {
-                item.Image = "/Assets/PlaylistLogo.jpg";
-                item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
-                RecentMedia.Add(item);
+                }
             }
         }
 
@@ -137,14 +94,9 @@ namespace MyMediaProject.Pages
                 var extension = Path.GetExtension(file.Name);
                 Uri fileUri = new Uri(file.Path);
 
-             
-
                 if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                 {
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(file);
-                    subWindow.Content = videoPage;
-                    subWindow.Activate();
+                    CreateSubVideoPage(file);
                 }
                 else 
                 {
@@ -168,7 +120,6 @@ namespace MyMediaProject.Pages
        
 
             }
-
         }
         private async void ItemMedia_Click(object sendr, RoutedEventArgs e)
         {
@@ -181,24 +132,43 @@ namespace MyMediaProject.Pages
 
                 if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                 {
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(file);
-                    subWindow.Content = videoPage;
-                    subWindow.Activate();
+                    CreateSubVideoPage(file);
                 }
                 else
                 {
                     mediaPlaylist.Add(fileUri);
-                    //playlist.Items.Add(file.Name);
                     NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
                 }
-
             }
         }
+
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            await _dataServices.SaveRecentPlay(RecentMedia.ToList(),"recentPlayed.txt");
+            var flagResult = await _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
+            if (!flagResult)
+            {
+                await App.MainRoot.ShowDialog("Error", "Saving recent files failed!");
+            }
+        }
+
+        private void CreateSubVideoPage(StorageFile file)
+        {
+            var subWindow = new Window();
+            var videoPage = new VideoPage(file);
+            subWindow.Content = videoPage;
+            subWindow.Activate();
+
+            subWindow.Closed += (sender, e) =>
+            {
+                subWindow.Content = null;
+
+                if (videoPage != null)
+                {
+                    videoPage.Dispose();
+                    videoPage = null;
+                }
+            };
         }
     }
 }

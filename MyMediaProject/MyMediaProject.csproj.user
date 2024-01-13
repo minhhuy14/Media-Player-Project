@@ -5,9 +5,9 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
-    <None Update="MainWindow.xaml">
+    <Page Update="Pages\VideosPage.xaml">
       <SubType>Designer</SubType>
-    </None>
+    </Page>
     <Page Update="generic.xaml">
       <SubType>Designer</SubType>
     </Page>

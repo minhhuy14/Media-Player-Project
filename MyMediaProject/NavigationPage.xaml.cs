@@ -25,7 +25,7 @@ namespace MyMediaProject
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class NavigationPage : Page
+    public sealed partial class NavigationPage : Page, IDisposable
     {
         public static Frame NVMain { get; private set; }
         public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
@@ -33,8 +33,6 @@ namespace MyMediaProject
 
   
         
-
-        private int currentMediaIndex = 0;
         public NavigationPage()
         {
             this.InitializeComponent();
@@ -62,6 +60,10 @@ namespace MyMediaProject
                 {
                     contentFrame.Content = new HomePage();
                 }
+                else if (selectedItemTag.Equals("Videos"))
+                {
+                    contentFrame.Content = new VideosPage();
+                }
                 else if (selectedItemTag.Equals("Play queue"))
                 {
                     contentFrame.Content = new PlayQueuePage();
@@ -73,7 +75,12 @@ namespace MyMediaProject
                 }
             }
         }
-       
-       
+
+        public void Dispose()
+        {
+            mediaPlayerElement.MediaPlayer.Pause();
+            mediaPlayerElement.Source = null;
+            contentFrame.Content = null;
+        }
     }
 }

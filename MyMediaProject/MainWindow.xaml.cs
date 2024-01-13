@@ -32,57 +32,5 @@ namespace MyMediaProject
             this.InitializeComponent();
             this.Title = "Media Player";
         }
-
-        //private async void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await SetLocalMedia();
-        //}
-
-        //async private System.Threading.Tasks.Task SetLocalMedia()
-        //{
-        //    var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
-        //    WinRT.Interop.InitializeWithWindow.Initialize(openPicker, WinRT.Interop.WindowNative.GetWindowHandle(this));
-
-        //    openPicker.FileTypeFilter.Add(".wmv");
-        //    openPicker.FileTypeFilter.Add(".mp4");
-        //    openPicker.FileTypeFilter.Add(".wma");
-        //    openPicker.FileTypeFilter.Add(".mp3");
-
-        //    var files = await openPicker.PickMultipleFilesAsync();
-
-        //    // mediaPlayerElement is a MediaPlayerElement control defined in XAML
-        //    if (files.Count >0)
-        //    {
-        //        foreach (var file in files)
-        //        {
-        //            Uri fileUri = new Uri(file.Path);
-        //            mediaPlaylist.Add(fileUri);
-        //            playlist.Items.Add(file.Name);
-        //        }
-        //            mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-        //            mediaPlayerElement.MediaPlayer.Play();
-                
-        //        //mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(file);
-
-        //        //mediaPlayerElement.MediaPlayer.Play();
-        //    }
-        //}
-        //private void RemoveFile_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (playlist.SelectedIndex != -1)
-        //    {
-        //        mediaPlaylist.RemoveAt(playlist.SelectedIndex);
-        //        playlist.Items.RemoveAt(playlist.SelectedIndex);
-        //    }
-        //}
-        //private void NextMedia_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (mediaPlaylist.Count > 0)
-        //    {
-        //        currentMediaIndex = (currentMediaIndex + 1) % mediaPlaylist.Count;
-        //        mediaPlayerElement.Source = MediaSource.CreateFromUri(mediaPlaylist[currentMediaIndex]);
-        //        mediaPlayerElement.MediaPlayer.Play();
-        //    }
-        //}
     }
 }

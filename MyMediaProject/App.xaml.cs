@@ -64,6 +64,11 @@ namespace MyMediaProject
             m_window.ExtendsContentIntoTitleBar = false;
             m_window.SetTitleBar(null);
             m_window.Activate();
+            m_window.Closed += (sender, e) =>
+            {
+                ((NavigationPage)m_window.Content).Dispose();
+            };
+
             MainRoot = m_window.Content as FrameworkElement;
         }
 
