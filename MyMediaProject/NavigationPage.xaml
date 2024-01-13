@@ -25,15 +25,18 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+
                 </Grid.RowDefinitions>
                 
                 <Frame Grid.Row="0" x:Name="contentFrame"/>
 
-                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                    AreTransportControlsEnabled="True">
-                    <MediaPlayerElement.TransportControls>
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <MediaPlayerElement.TransportControls >
                         <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-                               IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
+                                                IsPlaybackRateButtonVisible="True" 
+                                                IsPlaybackRateEnabled="True"
+                                                IsNextTrackButtonVisible="True"
+                                                IsPreviousTrackButtonVisible="True"/>
                     </MediaPlayerElement.TransportControls>
                 </MediaPlayerElement>
             </Grid>

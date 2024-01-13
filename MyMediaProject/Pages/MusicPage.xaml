@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="Page_Loaded"
+    Unloaded="Page_UnLoaded"
     xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -30,18 +31,21 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding DisplayPlaylist.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold"></TextBlock>
-            <Button Grid.Column="1" Click="AddFile_Button" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
-        </Grid>
 
-        <Button Grid.Row="1" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"  HorizontalAlignment="Left"></Button>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add files" Click="AddFile_Button" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 10 0"></Button>
+                <Button Content="Save Playlist" Click="SavePlayList_Click" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            </StackPanel>
+      </Grid>
+
+        <Button Name="btnPlayWay" Grid.Row="1" Content="Shuffle and play" Width="150" Style="{StaticResource AccentButtonStyle}" Margin="0 0 0 20"  HorizontalAlignment="Left" Click="ShuffleAndPlayClick"></Button>
 
         <StackPanel Grid.Row="2" Margin="0 0 0 20" Orientation="Horizontal" HorizontalAlignment="Left">
             <AppBarButton Icon="Delete" Label="Clear" Content="Clear" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
-            <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1"></AppBarButton>
+            <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1" Click="AddFile_Button"></AppBarButton>
         </StackPanel>
 
         <Grid Grid.Row="3" Margin="0 0 0 20">

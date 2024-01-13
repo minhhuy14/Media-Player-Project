@@ -22,7 +22,10 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+<<<<<<< HEAD
+=======
 using Windows.Storage;
+>>>>>>> dev
 using Windows.Storage.FileProperties;
 using Windows.UI.Core;
 
@@ -37,7 +40,12 @@ namespace MyMediaProject.Pages
     public sealed partial class MusicPage : Page
     {
         private DataServices _dataServices;
+<<<<<<< HEAD
+        private MediaPlaybackList _playbackList;
+
+=======
         private MediaPlaybackList _mediaPlaybackList;
+>>>>>>> dev
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
 
@@ -46,6 +54,11 @@ namespace MyMediaProject.Pages
             this.InitializeComponent();
             DisplayPlaylist = playlist;
             _dataServices = new DataServices();
+<<<<<<< HEAD
+            _playbackList = new MediaPlaybackList();
+            NavigationPage.MainMediaPlayerElement.Source = _playbackList;
+            // Initialize MediaCollection if it's null
+=======
             _mediaPlaybackList = new MediaPlaybackList();
 
             // Init MediaPlayBackList
@@ -55,6 +68,7 @@ namespace MyMediaProject.Pages
             }
             _mediaPlaybackList.ShuffleEnabled = false;
             NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+>>>>>>> dev
         }
         
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -203,8 +217,12 @@ namespace MyMediaProject.Pages
 
                     }
 
+<<<<<<< HEAD
+                    _playbackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
+=======
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem (MediaSource.CreateFromUri(fileUri)));
 
+>>>>>>> dev
                     //DisplayPlaylist.MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = file.Name });
                     //playlist.Items.Add(file.Name);
                 }
@@ -225,6 +243,20 @@ namespace MyMediaProject.Pages
             int index;
             for (index = 0; index < _mediaPlaybackList.Items.Count; index++) 
             {
+<<<<<<< HEAD
+                //NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(selectedMedia.Uri);
+                //NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                for (int i = 0; i < _playbackList.Items.Count; i++) 
+                {
+                    if (_playbackList.Items[i].Source.Uri.Equals(selectedMedia.Uri))
+                    {
+                        _playbackList.StartingItem = _playbackList.Items[i];
+                        NavigationPage.MainMediaPlayerElement.Source = _playbackList;
+                        break;
+                    }
+                }
+            }
+=======
                 if (_mediaPlaybackList.Items[index].Source.Uri.Equals(SelectedMedia.Uri)) 
                 {
                     break;
@@ -254,6 +286,7 @@ namespace MyMediaProject.Pages
                 }
             
             }
+>>>>>>> dev
         }
     }
 }

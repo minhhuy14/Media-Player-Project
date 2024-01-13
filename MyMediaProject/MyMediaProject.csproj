@@ -12,6 +12,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="generic.xaml" />
     <None Remove="NavigationPage.xaml" />
     <None Remove="Pages\CreatePlaylistDialogPage.xaml" />
     <None Remove="Pages\HomePage.xaml" />
@@ -45,6 +46,11 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\VideoPage.xaml">
