@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using MyMediaProject.Models;
 using static MyMediaProject.Pages.HomePage;
 using Windows.ApplicationModel;
+using System.Threading.Tasks;
 
 namespace MyMediaProject.Pages
 {
@@ -35,7 +36,7 @@ namespace MyMediaProject.Pages
             LoadData();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void CreatePlayList(object sender, RoutedEventArgs e)
         {
             var res= await App.MainRoot.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
 
@@ -57,6 +58,41 @@ namespace MyMediaProject.Pages
             }
         }
 
+        private async void RemovePlayList(object sender, RoutedEventArgs e)
+        {
+            //var res = await App.MainRoot.ShowDialog("Remove Playlist", "Are you sure you want to remove this playlist?", "Yes", "No");
+
+            ContentDialog deleteFileDialog = new ContentDialog
+            {
+                Title = "Remove Playlist",
+                Content = "Are you sure that you want to remove this playlist?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
+            deleteFileDialog.XamlRoot = this.XamlRoot;
+
+            ContentDialogResult result = await deleteFileDialog.ShowAsync();
+
+            // Interpret the result
+            if (result == ContentDialogResult.Primary)
+            {
+                // User clicked 'Yes' button
+                //
+
+                var flagResult = await _dataServices.RemovePlaylist(SelectedPlaylist);
+                if (!flagResult)
+                {
+                    await App.MainRoot.ShowDialog("Error!", "Cannot remove playlists!");
+                }
+                Playlists.Remove(SelectedPlaylist);
+
+            }
+            else
+            {
+                // User clicked 'No' button or dismissed the dialog
+            
+            }
+        }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = this;
@@ -73,7 +109,7 @@ namespace MyMediaProject.Pages
             }
         }
 
-        private async void MediaGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MediaGridView_DoubleTapped(object sender, RoutedEventArgs e)
         {
             await _dataServices.SaveAllPlaylists(Playlists.ToList());
             NavigationPage.NVMain.Content = new MusicPage(SelectedPlaylist);

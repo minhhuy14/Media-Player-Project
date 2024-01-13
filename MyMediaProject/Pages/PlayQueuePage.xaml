@@ -5,7 +5,7 @@
     xmlns:local="using:MyMediaProject.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
+     Loaded="Page_Loaded"
     xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
     
     mc:Ignorable="d"
@@ -31,8 +31,10 @@
 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Home" FontSize="25" FontWeight="Bold"></TextBlock>
+            <TextBlock Grid.Column="0" Text="Play Queue" FontSize="25" FontWeight="Bold"></TextBlock>
             <Button Grid.Column="1" Content="Add files" HorizontalAlignment="Right" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            <Button Grid.Column="1" Content="Load A Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="LoadPlayList_Click"></Button>
+
         </Grid>
 
 

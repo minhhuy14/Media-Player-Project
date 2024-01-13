@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyMediaProject.Models;
 using MyMediaProject.Pages;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,9 +29,22 @@ namespace MyMediaProject
         public static Frame NVMain { get; private set; }
         public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
+        public Playlist displayPlaylist; 
+
+        private int currentMediaIndex = 0;
         public NavigationPage()
         {
             this.InitializeComponent();
+            if (MusicPage.Current == null)
+            {
+                // Initialize MusicPage.Current here
+            }
+            else
+            if (MusicPage.Current.DisplayPlaylist == null)
+            {
+                // Initialize MusicPage.Current.DisplayPlaylist here
+            }
+            else displayPlaylist = MusicPage.Current.DisplayPlaylist;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -48,7 +63,7 @@ namespace MyMediaProject
             else
             {
                 var selectedItem = (NavigationViewItem)args.SelectedItem;
-                string selectedItemTag = ((string)selectedItem.Tag);
+                  string selectedItemTag = ((string)selectedItem.Tag);
                 if (selectedItemTag.Equals("Home")) 
                 {
                     contentFrame.Content = new HomePage();
@@ -64,7 +79,28 @@ namespace MyMediaProject
                 }
             }
         }
-
-
+        private async void  PreviousButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (currentMediaIndex > 0)
+            {
+                currentMediaIndex--;
+                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
+                mediaPlayerElement.MediaPlayer.Play();
+            }
+        }
+        private void PlayNextMedia()
+        {
+            if (currentMediaIndex < displayPlaylist.MediaCollection.Count - 1)
+            {
+                currentMediaIndex++;
+                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
+                mediaPlayerElement.MediaPlayer.Play();
+            }
+        }
+        private void NextButtonClick(object sender, RoutedEventArgs e)
+        {
+            PlayNextMedia();
+        }
+       
     }
 }

@@ -16,6 +16,7 @@ namespace MyMediaProject.Models
         public Playlist() 
         {
             MediaCollection = new ObservableCollection<Media>();
+            Image= "/Assets/StoreLogo.png";
         }
     }
 }
