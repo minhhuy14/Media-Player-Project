@@ -263,7 +263,8 @@ namespace MyMediaProject.Pages
                 {
                     _mediaPlaybackList.MoveTo((uint)index);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
-
+                    _recentMedias.Add(SelectedMedia);
+                    await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentOnPlaylists.txt");
                 }
                 else
                 { 

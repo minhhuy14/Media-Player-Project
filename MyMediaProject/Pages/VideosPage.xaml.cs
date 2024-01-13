@@ -28,6 +28,7 @@ namespace MyMediaProject.Pages
 
             MediaCollection = new ObservableCollection<Media>();
             _dataServices = new DataServices();
+      
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -101,6 +102,7 @@ namespace MyMediaProject.Pages
                     var subWindow = new Window();
                     var videoPage = new VideoPage(file);
                     subWindow.Content = videoPage;
+                    subWindow.Title = file.Name;
                     subWindow.Activate();
 
                     subWindow.Closed += (sender, e) =>

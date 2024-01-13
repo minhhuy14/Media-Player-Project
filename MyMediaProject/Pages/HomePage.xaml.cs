@@ -52,24 +52,8 @@ namespace MyMediaProject.Pages
             LoadRecentMedia();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
-            //List<Media> res= await _dataServices.LoadRecentMedia();
-            
-            //if (res!=null)
-            //{
-            //    foreach (var item in res)
-            //    {
-                    
-            //        item.Image = "/Assets/PlaylistLogo.jpg";
-            //        item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
-            //        MediaCollection.Add(item);
-
-            //    }
-            //}
-            
-           
             DataContext = this;
         }
         private async void LoadRecentMedia()
@@ -191,6 +175,7 @@ namespace MyMediaProject.Pages
             var subWindow = new Window();
             var videoPage = new VideoPage(file);
             subWindow.Content = videoPage;
+            subWindow.Title = file.Name;
             subWindow.Activate();
 
             subWindow.Closed += (sender, e) =>
