@@ -11,6 +11,7 @@ using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media;
+using Windows.Media.Capture.Frames;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -34,12 +37,15 @@ namespace MyMediaProject.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MusicPage : Page
+    public sealed partial class MusicPage : Page, INotifyPropertyChanged
     {
         private DataServices _dataServices;
-        private MediaPlaybackList _mediaPlaybackList;
+        public MediaPlaybackList _mediaPlaybackList;
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public MusicPage(Playlist playlist)
         {
@@ -48,22 +54,44 @@ namespace MyMediaProject.Pages
             _dataServices = new DataServices();
             _mediaPlaybackList = new MediaPlaybackList();
 
+
             // Init MediaPlayBackList
             for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++) 
             {
-                _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(DisplayPlaylist.MediaCollection[i].Uri)));
+                var file = DisplayPlaylist.MediaCollection[i];
+                if (file != null)
+                {
+                    string extension = Path.GetExtension(file.Name);
+                    var item = new MediaPlaybackItem(MediaSource.CreateFromUri(file.Uri));
+                    if (extension == ".mp4" || extension == ".wmv")
+                    {
+                        //item.CanSkip = false;
+                        //item.IsDisabledInPlaybackList = true;
+                    }
+
+                    _mediaPlaybackList.Items.Add(item);
+                    var temp = _mediaPlaybackList.Items[i].GetDisplayProperties;
+                }
             }
             _mediaPlaybackList.ShuffleEnabled = false;
+
             NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
         }
-        
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = this;
+            //_mediaPlaybackList.CurrentItemChanged += _mediaPlaybackList_CurrentItemChanged;
         }
 
-        private async void Page_UnLoaded(object sender, RoutedEventArgs e)
+        private void _mediaPlaybackList_CurrentItemChanged(MediaPlaybackList sender, CurrentMediaPlaybackItemChangedEventArgs args)
         {
+            //
+        }
+
+        private void Page_UnLoaded(object sender, RoutedEventArgs e)
+        {
+            //
         }
 
         private async void AddFile_Button(object sender, RoutedEventArgs e)
@@ -125,8 +153,6 @@ namespace MyMediaProject.Pages
             }
         }
 
-
-
         async private System.Threading.Tasks.Task SetLocalMedia()
         {
             var window = new Microsoft.UI.Xaml.Window();
@@ -178,6 +204,7 @@ namespace MyMediaProject.Pages
                         }
                         //DisplayPlaylist.MediaCollection.Add(new Media() { No = DisplayPlaylist.MediaCollection.Count + 1 , Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, 
                         //Length = mediaProperties.Duration.ToString(),Uri=fileUri });    
+                        _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                     }
                     else
                     {
@@ -201,9 +228,12 @@ namespace MyMediaProject.Pages
                             DisplayPlaylist.MediaCollection.Add(new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = string.Join(",", mediaProperties.Directors), Length = duration, Uri = fileUri });
                         }
 
-                    }
+                        var item = new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri));
+                        //item.CanSkip = false;
+                        //item.IsDisabledInPlaybackList = true;
+                        _mediaPlaybackList.Items.Add(item);
 
-                    _mediaPlaybackList.Items.Add(new MediaPlaybackItem (MediaSource.CreateFromUri(fileUri)));
+                    }
 
                     //DisplayPlaylist.MediaCollection.Add(new Media() { Image = "/Assets/StoreLogo.png", Name = file.Name });
                     //playlist.Items.Add(file.Name);
@@ -217,42 +247,50 @@ namespace MyMediaProject.Pages
             }
         }
 
-        private async void Handle_DoubleTapped(object sender, RoutedEventArgs e)
+        private void Handle_DoubleTapped(object sender, RoutedEventArgs e)
         {
-            string extension = Path.GetExtension(SelectedMedia.Name);
-            
-            // Find index of selected media
-            int index;
-            for (index = 0; index < _mediaPlaybackList.Items.Count; index++) 
+            PlaySelectedMedia(SelectedMedia);
+        }
+
+        private async void PlaySelectedMedia(Media selectedMedia)
+        {
+
+            if (selectedMedia != null)
             {
-                if (_mediaPlaybackList.Items[index].Source.Uri.Equals(SelectedMedia.Uri)) 
-                {
-                    break;
-                }
-            }
+                string extension = Path.GetExtension(selectedMedia.Name);
 
-
-            if (SelectedMedia != null)
-            {
-                if (extension == ".mp4" || extension == ".wmv")
+                // Find index of selected media
+                int index;
+                for (index = 0; index < _mediaPlaybackList.Items.Count; index++)
                 {
-                    _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
-                    NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+                    if (_mediaPlaybackList.Items[index].Source.Uri.Equals(selectedMedia.Uri))
+                    {
+                  
+                        break;
+                    }
+                }
 
-                    StorageFile videoFile = await StorageFile.GetFileFromPathAsync(SelectedMedia.Uri.LocalPath);
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(videoFile);
-                    subWindow.Content = videoPage;
-                    subWindow.Title= SelectedMedia.Name;
-                    subWindow.Activate();
-                }
-                else
+                if (index != _mediaPlaybackList.CurrentItemIndex) 
                 {
-                    _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
-                    NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
-                    NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                    if (extension == ".mp4" || extension == ".wmv")
+                    {
+                        _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
+                        NavigationPage.MainMediaPlayerElement.MediaPlayer.IsVideoFrameServerEnabled = false;
+                        NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+
+                        StorageFile videoFile = await StorageFile.GetFileFromPathAsync(selectedMedia.Uri.LocalPath);
+                        var videoPage = new VideoPage(videoFile);
+                        NavigationPage.NVMain.Content = videoPage;
+                        ((MediaPlayerElement)NavigationPage.NVMain.FindName("mediaPlayerElement")).Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
+                        NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+                        //_mediaPlaybackList.MoveTo((uint)index);
+                        NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                    }
                 }
-            
             }
         }
     }

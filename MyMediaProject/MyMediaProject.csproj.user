@@ -8,6 +8,9 @@
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Pages\VideosPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="generic.xaml">
       <SubType>Designer</SubType>
     </Page>

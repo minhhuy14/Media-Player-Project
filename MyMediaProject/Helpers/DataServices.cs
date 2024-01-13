@@ -144,7 +144,7 @@ namespace MyMediaProject.Helpers
         public async Task<List<Playlist>> LoadAllPlaylists()
         {
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlist.txt");
+            Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("playlists.txt");
             if (!sampleFile.IsAvailable)
             {
                 return null;

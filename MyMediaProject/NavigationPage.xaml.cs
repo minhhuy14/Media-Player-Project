@@ -31,7 +31,6 @@ namespace MyMediaProject
         public NavigationViewItem SelectedItem { get; set; }
         public Playlist displayPlaylist; 
 
-        private int currentMediaIndex = 0;
         public NavigationPage()
         {
             this.InitializeComponent();
@@ -69,28 +68,5 @@ namespace MyMediaProject
                 }
             }
         }
-        private async void  PreviousButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (currentMediaIndex > 0)
-            {
-                currentMediaIndex--;
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
-                mediaPlayerElement.MediaPlayer.Play();
-            }
-        }
-        private void PlayNextMedia()
-        {
-            if (currentMediaIndex < displayPlaylist.MediaCollection.Count - 1)
-            {
-                currentMediaIndex++;
-                mediaPlayerElement.Source = MediaSource.CreateFromUri(displayPlaylist.MediaCollection[currentMediaIndex].Uri);
-                mediaPlayerElement.MediaPlayer.Play();
-            }
-        }
-        private void NextButtonClick(object sender, RoutedEventArgs e)
-        {
-            PlayNextMedia();
-        }
-       
     }
 }

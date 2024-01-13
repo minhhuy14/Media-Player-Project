@@ -13,31 +13,31 @@
     <Grid>
         <NavigationView x:Name="nvMain"
                         PaneDisplayMode="Left"
-                        IsBackButtonVisible="Collapsed"
+                        IsBackEnabled="True"
                         SelectionChanged="nvMain_SelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Tag="Home" Icon="Home" IsSelected="True" />
+                <NavigationViewItem Content="Videos" Tag="Videos" Icon="Video"/>
                 <NavigationViewItem Content="Play queue" Tag="Play queue" Icon="ViewAll"/>
                 <NavigationViewItem Content="Playlists" Tag="Playlists" Icon="Play"/>
             </NavigationView.MenuItems>
 
-            <Grid>
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
-
                 </Grid.RowDefinitions>
                 
                 <Frame Grid.Row="0" x:Name="contentFrame"/>
 
-                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <MediaPlayerElement.TransportControls >
-                        <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-                                                IsPlaybackRateButtonVisible="True" 
-                                                IsPlaybackRateEnabled="True"
-                                                IsNextTrackButtonVisible="True"
-                                                IsPreviousTrackButtonVisible="True"/>
-                    </MediaPlayerElement.TransportControls>
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" AreTransportControlsEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill">
+                        <MediaPlayerElement.TransportControls>
+                            <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False"
+                                                    IsPlaybackRateButtonVisible="True" 
+                                                    IsPlaybackRateEnabled="True"
+                                                    IsNextTrackButtonVisible="True"
+                                                    IsPreviousTrackButtonVisible="True"/>
+                        </MediaPlayerElement.TransportControls>
                 </MediaPlayerElement>
             </Grid>
         </NavigationView>
