@@ -18,5 +18,18 @@ namespace MyMediaProject.Models
         public string Length { get; set; }
         public Uri Uri { get; set; } 
         public BitmapImage ImageBitmap { get; set; }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Media))
+                return false;
+
+            Media other = (Media)obj;
+            return this.Uri == other.Uri;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Uri.GetHashCode();
+        }
     }
 }

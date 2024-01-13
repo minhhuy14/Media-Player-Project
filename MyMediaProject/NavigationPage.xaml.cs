@@ -31,12 +31,12 @@ namespace MyMediaProject
         public static MediaPlayerElement MainMediaPlayerElement { get; private set; }
         public NavigationViewItem SelectedItem { get; set; }
 
-        public static Queue<Media> RecentMedia { get; set; } 
+  
         
         public NavigationPage()
         {
             this.InitializeComponent();
-            RecentMedia = new Queue<Media>();
+          
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -9,6 +9,7 @@ using MyMediaProject.Helpers;
 using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -33,25 +34,29 @@ namespace MyMediaProject.Pages
         private MediaPlaybackList _mediaPlaybackList;
         public Media SelectedMedia { get; set; }
 
+        private ObservableCollection<Media> _recentMedias;
+
         public PlayQueuePage()
         {
             this.InitializeComponent();
             _dataServices = new DataServices();
             DisplayPlaylist = new Playlist();
             _mediaPlaybackList = new MediaPlaybackList();
+            _recentMedias = new ObservableCollection<Media>();
 
         }
 
         private async void LoadPlayList_Click(object sender, RoutedEventArgs e)
         {
             await SetLocalPlayList();
-             NavigationPage.NVMain.Content = new MusicPage(DisplayPlaylist);
+            NavigationPage.NVMain.Content = new MusicPage(DisplayPlaylist);
 
         }
 
         private async void AddFile_Click(object sender,RoutedEventArgs e)
         {
             await SetLocalMedia();
+            await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentQueue.txt");
         }
         async private System.Threading.Tasks.Task SetLocalMedia()
         {
@@ -108,7 +113,8 @@ namespace MyMediaProject.Pages
                         continue;
                     }
 
-                    NavigationPage.RecentMedia.Enqueue(md);
+                    _recentMedias.Add(md);
+
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                 }
             }
@@ -138,8 +144,9 @@ namespace MyMediaProject.Pages
 
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            await _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
-        }   
+
+        }
+ 
         private async void Handle_DoubleTapped(object sender, RoutedEventArgs e)
         {
 
@@ -162,14 +169,18 @@ namespace MyMediaProject.Pages
                     _mediaPlaybackList.StartingItem = _mediaPlaybackList.Items[index];
                     NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
-
-                    //Add to recent playlist
-                    NavigationPage.RecentMedia.Enqueue(SelectedMedia);
                 }
                 else
                 {
                     await App.MainRoot.ShowDialog("Error", "The extension of this media should be .mp3 or .wma!");
                 }
+
+                //Add to recent playlist
+                _recentMedias.Add(SelectedMedia);
+
+                await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentQueue.txt");
+
+
             }
         }
         private async void RemoveMedia_Click(object sender, RoutedEventArgs e)

@@ -77,9 +77,6 @@ namespace MyMediaProject.Pages
 
                         md = new Media() { Image = "/Assets/PlaylistLogo.png", Name = file.Name, Uri = fileUri, ImageBitmap = await _dataServices.GetThumbnailAsync(fileUri) };
                         MediaCollection.Add(md);
-
-                        //Add to recent playlist
-                        NavigationPage.RecentMedia.Enqueue(md);
                     }
                     else
                     {

@@ -45,6 +45,8 @@ namespace MyMediaProject.Pages
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
 
+        private ObservableCollection<Media> _recentMedias;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -54,6 +56,7 @@ namespace MyMediaProject.Pages
             DisplayPlaylist = playlist;
             _dataServices = new DataServices();
             _mediaPlaybackList = new MediaPlaybackList();
+            _recentMedias = new ObservableCollection<Media>();
 
             // Init MediaPlayBackList
             for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++) 
@@ -81,12 +84,7 @@ namespace MyMediaProject.Pages
 
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
-            var flagResult = await _dataServices.SaveRecentPlay(NavigationPage.RecentMedia);
-
-            if (!flagResult)
-            {
-                await App.MainRoot.ShowDialog("Error", "Saving recent media failed!");
-            }
+           
         }
 
         private async void AddFiles_Button(object sender, RoutedEventArgs e)
@@ -226,18 +224,12 @@ namespace MyMediaProject.Pages
                             md = new  Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
 
                             DisplayPlaylist.MediaCollection.Add(md);
-                            
-                            //Add to recent playlist
-                            NavigationPage.RecentMedia.Enqueue(md);
                         }
                         else
                         {
                             md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
                             index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
                             DisplayPlaylist.MediaCollection.Add(md);
-                           
-                            //Add to recent playlist
-                            NavigationPage.RecentMedia.Enqueue(md);
                         }
 
                         _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
@@ -248,6 +240,7 @@ namespace MyMediaProject.Pages
                         continue;
                     }
                 }
+            
             }
         }
 
@@ -271,8 +264,6 @@ namespace MyMediaProject.Pages
                     _mediaPlaybackList.MoveTo((uint)index);
                     NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
 
-                    //Add to recent playlist
-                    NavigationPage.RecentMedia.Enqueue(SelectedMedia);
                 }
                 else
                 { 
