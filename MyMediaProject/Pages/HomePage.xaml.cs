@@ -102,7 +102,10 @@ namespace MyMediaProject.Pages
                 item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
                 RecentMedia.Add(item);
             }
-        }
+        
+
+     }
+       
 
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
         {
@@ -157,7 +160,7 @@ namespace MyMediaProject.Pages
 
             }
         }
-        private async void ItemMedia_Click(object sendr, RoutedEventArgs e)
+        private async void ItemMedia_DoubleClick(object sendr, RoutedEventArgs e)
         {
             if (SelectedMedia != null)
             {
@@ -192,7 +195,11 @@ namespace MyMediaProject.Pages
             var subWindow = new Window();
             var videoPage = new VideoPage(file);
             subWindow.Content = videoPage;
-            subWindow.Title = file.Name;
+            subWindow.Title= file.Name;
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(subWindow);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            appWindow.SetIcon(@"Assets/app_icon.ico");
             subWindow.Activate();
 
             subWindow.Closed += (sender, e) =>

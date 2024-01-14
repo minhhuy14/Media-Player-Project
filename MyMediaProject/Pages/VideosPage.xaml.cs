@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using Windows.Storage;
 using Windows.Media.Playback;
 using System.Diagnostics;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -145,15 +147,28 @@ namespace MyMediaProject.Pages
                 {
                     StorageFile file = await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
 
+                if (extension.Equals(".mp4") || extension.Equals(".wmv"))
+                {
 
-                    if (extension.Equals(".mp4") || extension.Equals(".wmv"))
-                    {
-                        var subWindow = new Window();
-                        var videoPage = new VideoPage(file);
-                        subWindow.Content = videoPage;
-                        subWindow.Title = file.Name;
+                    var subWindow = new Window();
 
-                        subWindow.Activate();
+                    IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(subWindow);
+                    var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+                    var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+                    appWindow.SetIcon(@"Assets/app_icon.ico");
+                    subWindow.Title=SelectedMedia.Name;
+
+                    // move to center screen
+                    PointInt32 CenteredPosition = appWindow.Position;
+                    DisplayArea displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Nearest);
+                    CenteredPosition.X = (displayArea.WorkArea.Width - appWindow.Size.Width) / 2;
+                    CenteredPosition.Y = (displayArea.WorkArea.Height - appWindow.Size.Height) / 2;
+                    appWindow.Move(CenteredPosition);
+
+                    var videoPage = new VideoPage(file);
+
+                    subWindow.Content = videoPage;
+                    subWindow.Activate();
 
                         subWindow.Closed += (sender, e) =>
                         {

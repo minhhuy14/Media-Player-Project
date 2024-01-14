@@ -297,18 +297,19 @@ namespace MyMediaProject.Pages
                             duration = duration.Substring(0, dot_c);
                         }
 
-                        if (currentNumItems == 0)
-                        {
-                            md = new  Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                        //if (currentNumItems == 0)
+                        //{
 
-                            DisplayPlaylist.MediaCollection.Add(md);
-                        }
-                        else
-                        {
-                            md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
-                            index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
-                            DisplayPlaylist.MediaCollection.Add(md);
-                        }
+                        //}
+                        //else
+                        //{
+                        //    md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                        //    index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
+                        //    DisplayPlaylist.MediaCollection.Add(md);
+                        //}
+                         md = new  Media() { No = currentNumItems+1, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
+                           DisplayPlaylist.MediaCollection.Add(md);
+
 
                         _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                         _hashSet.Add(fileUri);
