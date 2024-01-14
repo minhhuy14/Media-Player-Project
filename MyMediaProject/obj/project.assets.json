@@ -12879,6 +12879,10 @@
             "version": "[6.0.25, 6.0.25]"
           },
           {
+            "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
             "name": "Microsoft.NETCore.App.Runtime.win-arm64",
             "version": "[6.0.25, 6.0.25]"
           },
@@ -12929,13 +12933,5 @@
         "#import": []
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file E:\\University\\ThirdYear\\HK1\\Window\\DoAn\\MediaPlayer\\MyMediaProject\\MyMediaProject\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

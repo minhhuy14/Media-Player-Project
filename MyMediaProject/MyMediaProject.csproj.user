@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Source>C:\Users\admin\Downloads\app-icon.png</Source>
-    <SmallTileSource>C:\Users\admin\Downloads\app-icon.png</SmallTileSource>
-    <MediumTileSource>C:\Users\admin\Downloads\app-icon.png</MediumTileSource>
-    <WideTileSource>C:\Users\admin\Downloads\app-icon.png</WideTileSource>
-    <LargeTileSource>C:\Users\admin\Downloads\app-icon.png</LargeTileSource>
-    <AppIconSource>C:\Users\admin\Downloads\app-icon.png</AppIconSource>
-    <SplashScreenSource>C:\Users\admin\Downloads\app-icon.png</SplashScreenSource>
-    <PackageLogoSource>C:\Users\admin\Downloads\app-icon.png</PackageLogoSource>
+    <Source>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</Source>
+    <SmallTileSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</SmallTileSource>
+    <MediumTileSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</MediumTileSource>
+    <WideTileSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</WideTileSource>
+    <LargeTileSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</LargeTileSource>
+    <AppIconSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</AppIconSource>
+    <SplashScreenSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</SplashScreenSource>
+    <PackageLogoSource>E:\University\ThirdYear\HK1\Window\DoAn\MediaPlayer\MyMediaProject\MyMediaProject\Assets\app-icon.png</PackageLogoSource>
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>False</AppxShowAllApps>
     <AppxBuildConfigurationSelection>x86|x64</AppxBuildConfigurationSelection>
