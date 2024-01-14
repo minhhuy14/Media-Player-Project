@@ -7,8 +7,10 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
+using MyMediaProject.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -66,10 +68,19 @@ namespace MyMediaProject
             m_window.Activate();
             m_window.Closed += (sender, e) =>
             {
-                ((NavigationPage)m_window.Content)?.Dispose();
-                m_window.Content = null;
-                MainRoot = null;
-                Current.Exit();
+                try
+                {
+                    var _dataServices = new DataServices();
+                    _dataServices.ClearPlayQueue();
+                    ((NavigationPage)m_window.Content)?.Dispose();
+                    m_window.Content = null;
+                    MainRoot = null;
+                    Current.Exit();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             };
 
             MainRoot = m_window.Content as FrameworkElement;

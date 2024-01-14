@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyMediaProject.Models
 {
-    public class Playlist
+    public class Playlist: INotifyPropertyChanged
     {
         public string Name { get; set; }
         public string Image { get; set; }
@@ -18,5 +19,7 @@ namespace MyMediaProject.Models
             MediaCollection = new ObservableCollection<Media>();
             Image = "/Assets/PlaylistLogo.jpg";
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

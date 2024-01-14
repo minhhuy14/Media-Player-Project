@@ -27,28 +27,38 @@ namespace MyMediaProject.Pages
         public Playlist SelectedPlaylist { get; set; }
         
         private DataServices _dataServices;
-
+        private HashSet<string> _hashSet;
         public PlaylistsPage()
         {
             this.InitializeComponent();
             _dataServices = new DataServices();
             Playlists = new ObservableCollection<Playlist>();
+            _hashSet = new HashSet<string>();
             LoadData();
         }
 
         private async void CreatePlayList(object sender, RoutedEventArgs e)
         {
-            var res= await App.MainRoot?.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
+            var res = await App.MainRoot?.ShowCreateDialogDialog("Create Playlist", "Create", "Cancel");
 
             if (!string.IsNullOrEmpty(res))
             {
-                Playlists.Add(new Playlist
+                if (!_hashSet.Contains(res))
                 {
-                    Name = res,
+                    Playlists.Add(new Playlist
+                    {
+                        Name = res,
 
-                    MediaCollection = new ObservableCollection<Media>(),
-                    Image = "/Assets/PlaylistLogo.jpg"
-                });
+                        MediaCollection = new ObservableCollection<Media>(),
+                        Image = "/Assets/PlaylistLogo.jpg"
+                    });
+                    _hashSet.Add(res);
+                }
+                else 
+                {
+                    await App.MainRoot?.ShowDialog("Error!", "This playlist already has been existed!");
+                    return;
+                }
             }
 
             var flagResult = await _dataServices.SaveAllPlaylists(Playlists.ToList());
@@ -88,8 +98,8 @@ namespace MyMediaProject.Pages
                     await App.MainRoot?.ShowDialog("Success!", "Remove Playlist Successfully!");
 
                 }
+                _hashSet.Remove(SelectedPlaylist.Name);
                 Playlists.Remove(SelectedPlaylist);
-
             }
            
         }
@@ -107,7 +117,11 @@ namespace MyMediaProject.Pages
             {
                 for (int i = 0; i < task.Count; i++)
                 {
-                    Playlists.Add(task[i]);
+                    if (!_hashSet.Contains(task[i].Name))
+                    {
+                        Playlists.Add(task[i]);
+                        _hashSet.Add(task[i].Name);
+                    }
                 }
             }
         }

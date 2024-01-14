@@ -15,6 +15,108 @@ namespace MyMediaProject.Helpers
 {
     public class DataServices
     {
+        public async void ClearPlayQueue() 
+        {
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("playQueue.txt", CreationCollisionOption.ReplaceExisting);
+            if (!sampleFile.IsAvailable)
+            {
+                return;
+            }
+            await FileIO.WriteTextAsync(sampleFile, string.Empty);
+        }
+
+        // Playlist and state
+        public async Task<Tuple<Playlist,int>> LoadPlayQueue()
+        {
+            try
+            {
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.IStorageItem item = await storageFolder.TryGetItemAsync("playQueue.txt");
+
+                if (item == null)
+                {
+                    // file is not existed;
+                    return new Tuple<Playlist, int>(null, 0);
+                }
+
+                Windows.Storage.StorageFile sampleFile = (Windows.Storage.StorageFile)item;
+
+                //Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("rencentPlayed.txt");
+                if (!sampleFile.IsAvailable)
+                {
+                    return new Tuple<Playlist, int>(null, 0);
+                }
+
+                var content = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+                if (string.IsNullOrEmpty(content))
+                {
+                    // The content of the file is empty
+                    return new Tuple<Playlist, int>(null, 0);
+                }
+                var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                Playlist playlist = new Playlist();
+
+                int startIndex = int.Parse(lines[0]);
+                int count = int.Parse(lines[1]);
+                int index = 2;
+                for (int j = 0; j < count; j++)
+                {
+                    Media media = new Media();
+                    media.Name = lines[index++];
+                    media.Artist = lines[index++];
+                    media.Length = lines[index++];
+                    media.Uri = new Uri(lines[index++]);
+
+                    if (File.Exists(media.Uri.LocalPath))
+                    {
+                        playlist.MediaCollection.Add(media);
+                    }
+                }
+
+                return new Tuple<Playlist, int>(playlist, startIndex);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return new Tuple<Playlist, int>(null, 0);
+            }
+        }
+
+        public async Task<bool> SavePlayQueue(Playlist playlist, int startIndex)
+        {
+            try
+            {
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync("playQueue.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
+                if (!sampleFile.IsAvailable)
+                {
+                    return false;
+                }
+                StringBuilder sb = new StringBuilder();
+                var collection = playlist.MediaCollection;
+                sb.AppendLine(startIndex.ToString());
+                sb.AppendLine(collection.Count.ToString());
+
+                foreach (var media in collection)
+                {
+                    sb.AppendLine(media.Name);
+                    sb.AppendLine(media.Artist);
+                    sb.AppendLine(media.Length);
+                    sb.AppendLine(media.Uri.ToString());
+                }
+
+                await Windows.Storage.FileIO.WriteTextAsync(sampleFile, sb.ToString());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
         public async Task<bool> RemovePlaylist(Playlist playlist) 
         {
             try

@@ -12,6 +12,7 @@ using Windows.Media.Playback;
 using System.Diagnostics;
 using Microsoft.UI.Windowing;
 using Windows.Graphics;
+using System.Runtime.InteropServices;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +26,10 @@ namespace MyMediaProject.Pages
     {
         private DataServices _dataServices;
         private ObservableCollection<Media> _recentMedias;
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const UInt32 SWP_NOSIZE = 0x0001;
+        private const UInt32 SWP_NOMOVE = 0x0002;
+        private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
 
         public ObservableCollection<Media> MediaCollection { get; set; }
         public Media SelectedMedia { get; set; }
@@ -136,7 +141,7 @@ namespace MyMediaProject.Pages
             }
 
         }
-        private async void ItemMedia_Click(object sendr, RoutedEventArgs e)
+        private async void ItemMedia_DoubleClick(object sender, RoutedEventArgs e)
         {
             if (SelectedMedia != null)
             {
@@ -157,6 +162,9 @@ namespace MyMediaProject.Pages
                     var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
                     appWindow.SetIcon(@"Assets/app_icon.ico");
                     subWindow.Title=SelectedMedia.Name;
+
+                    // Set pos
+                    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
 
                     // move to center screen
                     PointInt32 CenteredPosition = appWindow.Position;
@@ -196,6 +204,11 @@ namespace MyMediaProject.Pages
                 }
             }
         }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
             var flagResult = await _dataServices.SaveAllVideos(MediaCollection.ToList());

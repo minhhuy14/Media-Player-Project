@@ -191,9 +191,13 @@ namespace MyMediaProject.Pages
                             break;
                         }
                     }
+
+                    _hashSet.Remove(DisplayPlaylist.MediaCollection[index].Uri);
                     DisplayPlaylist.MediaCollection.RemoveAt(index);
                     _mediaPlaybackList.Items.RemoveAt(index);
-                   bool flag= await _dataServices.SavePlaylist(DisplayPlaylist);
+                    UpdateNo();
+
+                    bool flag = await _dataServices.SavePlaylist(DisplayPlaylist);
                     if (flag)
                     {
                         await App.MainRoot?.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
@@ -202,6 +206,7 @@ namespace MyMediaProject.Pages
                     {
                         await App.MainRoot?.ShowDialog("Error!", "Cannot remove media from playlists!");
                     }
+
                 }
             }
         }
@@ -297,19 +302,8 @@ namespace MyMediaProject.Pages
                             duration = duration.Substring(0, dot_c);
                         }
 
-                        //if (currentNumItems == 0)
-                        //{
-
-                        //}
-                        //else
-                        //{
-                        //    md = new Media() { No = index, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
-                        //    index = DisplayPlaylist.MediaCollection[currentNumItems - 1].No + 1;
-                        //    DisplayPlaylist.MediaCollection.Add(md);
-                        //}
                          md = new  Media() { No = currentNumItems+1, Image = "/Assets/StoreLogo.png", Name = file.Name, Artist = mediaProperties.Artist, Length = duration, Uri = fileUri };
-                           DisplayPlaylist.MediaCollection.Add(md);
-
+                         DisplayPlaylist.MediaCollection.Add(md);
 
                         _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
                         _hashSet.Add(fileUri);
@@ -372,5 +366,12 @@ namespace MyMediaProject.Pages
             return list;
         }
 
+        private void UpdateNo()
+        {
+            for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++)
+            {
+                DisplayPlaylist.MediaCollection[i].No = i + 1;
+            }
+        }
     }
 }

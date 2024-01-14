@@ -36,6 +36,7 @@ namespace MyMediaProject.Pages
         private MediaPlaybackList _mediaPlaybackList;
         private ObservableCollection<Media> _recentMedias;
         private DispatcherQueue _dispatcher;
+        private HashSet<Uri> _hashSet;
 
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
@@ -47,7 +48,8 @@ namespace MyMediaProject.Pages
             _dataServices = new DataServices();
             DisplayPlaylist = new Playlist();
             _mediaPlaybackList = new MediaPlaybackList();
-            _recentMedias = new ObservableCollection<Media>();
+            _recentMedias = new ObservableCollection<Media>(); 
+            _hashSet = new HashSet<Uri> { };
             _dispatcher = DispatcherQueue;
 
             NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
@@ -56,16 +58,13 @@ namespace MyMediaProject.Pages
         private async void LoadPlayList_Click(object sender, RoutedEventArgs e)
         {
             await SetLocalPlayList();
-            if (DisplayPlaylist != null)
-            {
-                NavigationPage.NVMain.Content = new MusicPage(DisplayPlaylist);
-            }
         }
 
         private async void AddFiles_Click(object sender,RoutedEventArgs e)
         {
             await SetLocalMedia();
             await _dataServices.SaveRecentPlay(_recentMedias.ToList(),"recentQueue.txt");
+            await _dataServices.SavePlayQueue(DisplayPlaylist, _mediaPlaybackList.CurrentItem == null ? 0 : (int)_mediaPlaybackList.CurrentItemIndex);
         }
         async private System.Threading.Tasks.Task SetLocalMedia()
         {
@@ -86,8 +85,12 @@ namespace MyMediaProject.Pages
             {
                 foreach (var file in files)
                 {
-
                     Uri fileUri = new Uri(file.Path);
+                    if (_hashSet.Contains(fileUri))
+                    {
+                        continue;
+                    }
+
                     string extension = Path.GetExtension(file.Name);
                     int currentNumItems = DisplayPlaylist.MediaCollection.Count;
                     int index = 0;
@@ -124,6 +127,7 @@ namespace MyMediaProject.Pages
 
                     _recentMedias.Add(md);
                     _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
+                    _hashSet.Add(fileUri);
                 }
             }
         }
@@ -141,11 +145,75 @@ namespace MyMediaProject.Pages
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hwd);
 
             var file = await openPicker.PickSingleFileAsync();
-            DisplayPlaylist = await _dataServices.LoadAPlayListFromFile(file);
+            
+            var task = await _dataServices.LoadAPlayListFromFile(file);
+            if (task != null)
+            {
+                _mediaPlaybackList.Items.Clear();
+                DisplayPlaylist.MediaCollection.Clear();
+
+                foreach (var item in task.MediaCollection)
+                {
+                    _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(item.Uri)));
+                    DisplayPlaylist.MediaCollection.Add(item);
+                }
+
+                UpdateNo();
+            }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            var (taskRes1, taskRes2) = await _dataServices.LoadPlayQueue();
+
+            if (taskRes1 != null)
+            {
+                taskRes1.MediaCollection.ToList().ForEach(item => { DisplayPlaylist.MediaCollection.Add(item); });
+
+                // Init MediaPlayBackList
+                bool flag = false;
+                for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++)
+                {
+                    var file = DisplayPlaylist.MediaCollection[i];
+                    if (file != null)
+                    {
+                        string extension = Path.GetExtension(file.Name);
+                        if (extension.Equals(".mp3") || extension.Equals(".wma"))
+                        {
+                            if (!_hashSet.Contains(DisplayPlaylist.MediaCollection[i].Uri))
+                            {
+                                var item = new MediaPlaybackItem(MediaSource.CreateFromUri(file.Uri));
+                                _mediaPlaybackList.Items.Add(item);
+                                _hashSet.Add(DisplayPlaylist.MediaCollection[i].Uri);
+                                DisplayPlaylist.MediaCollection[i].No = i + 1;
+                            }
+                            else
+                            {
+                                flag = true;
+                                DisplayPlaylist.MediaCollection.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                    }
+                }
+
+                if (taskRes2 >= taskRes1.MediaCollection.Count)
+                {
+                    taskRes2 = 0;
+                }
+
+                if (_mediaPlaybackList != null && _mediaPlaybackList.Items.Count > taskRes2) 
+                {
+                    _mediaPlaybackList.MoveTo((uint)taskRes2);
+                }
+
+                if (flag)
+                {
+                    await _dataServices.SavePlaylist(DisplayPlaylist);
+                }
+            }
+
+
             _mediaPlaybackList.CurrentItemChanged += _mediaPlaybackList_CurrentItemChanged;
             DataContext = this;
         }
@@ -161,7 +229,7 @@ namespace MyMediaProject.Pages
 
                     _dispatcher.TryEnqueue(() =>
                     {
-                        mediaDataGrid.SelectedItem = DisplayPlaylist.MediaCollection[index];
+                        mediaDataGrid.SelectedIndex = index;
                     });
                 }
                 else
@@ -170,7 +238,7 @@ namespace MyMediaProject.Pages
                     {
                         _dispatcher.TryEnqueue(() =>
                         {
-                            mediaDataGrid.SelectedItem = DisplayPlaylist.MediaCollection[0];
+                            mediaDataGrid.SelectedIndex = 0;
                         });
                     }
                 }
@@ -190,14 +258,8 @@ namespace MyMediaProject.Pages
                 string extension = Path.GetExtension(SelectedMedia.Name);
 
                 // Find index of selected media
-                int index;
-                for (index = 0; index < _mediaPlaybackList.Items.Count; index++)
-                {
-                    if (_mediaPlaybackList.Items[index].Source.Uri.Equals(SelectedMedia.Uri))
-                    {
-                        break;
-                    }
-                }
+                int index = mediaDataGrid.SelectedIndex;
+              
                 if (extension == ".mp3" || extension == ".wma")
                 {
                     _mediaPlaybackList.MoveTo((uint)index);
@@ -240,9 +302,13 @@ namespace MyMediaProject.Pages
                             break;
                         }
                     }
+
+                    _hashSet.Remove(DisplayPlaylist.MediaCollection[index].Uri);
                     DisplayPlaylist.MediaCollection.RemoveAt(index);
                     _mediaPlaybackList.Items.RemoveAt(index);
-                    bool flag = await _dataServices.SavePlaylist(DisplayPlaylist);
+                    UpdateNo();
+
+                    bool flag = await _dataServices.SavePlayQueue(DisplayPlaylist, _mediaPlaybackList.CurrentItem == null ? 0 : (int)_mediaPlaybackList.CurrentItemIndex);
                     if (flag)
                     {
                         await App.MainRoot?.ShowDialog("Success!", "Remove Media from Playlist Successfully!");
@@ -251,7 +317,21 @@ namespace MyMediaProject.Pages
                     {
                         await App.MainRoot?.ShowDialog("Error!", "Cannot remove media from playlists!");
                     }
+
                 }
+            }
+        }
+
+        private async void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            await _dataServices.SavePlayQueue(DisplayPlaylist, _mediaPlaybackList.CurrentItem == null ? 0 : (int)_mediaPlaybackList.CurrentItemIndex);
+        }
+
+        private void UpdateNo() 
+        {
+            for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++)
+            {
+                DisplayPlaylist.MediaCollection[i].No = i + 1;
             }
         }
     }

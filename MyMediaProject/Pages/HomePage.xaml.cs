@@ -1,3 +1,5 @@
+
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -13,11 +15,13 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Gaming.Input.ForceFeedback;
+using Windows.Graphics;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Media.Playlists;
@@ -37,6 +41,10 @@ namespace MyMediaProject.Pages
     {
         private List<Uri> mediaPlaylist = new List<Uri>();
         private DataServices _dataServices;
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const UInt32 SWP_NOSIZE = 0x0001;
+        private const UInt32 SWP_NOMOVE = 0x0002;
+        private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
 
         // To Test HomePage
         public ObservableCollection<Media> MediaCollection { get; set; }
@@ -102,9 +110,7 @@ namespace MyMediaProject.Pages
                 item.ImageBitmap = await _dataServices.GetThumbnailAsync(item.Uri);
                 RecentMedia.Add(item);
             }
-        
-
-     }
+        }
        
 
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -200,6 +206,18 @@ namespace MyMediaProject.Pages
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
             appWindow.SetIcon(@"Assets/app_icon.ico");
+
+            // Set pos
+            SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
+
+            // move to center screen
+            PointInt32 CenteredPosition = appWindow.Position;
+            DisplayArea displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Nearest);
+            CenteredPosition.X = (displayArea.WorkArea.Width - appWindow.Size.Width) / 2;
+            CenteredPosition.Y = (displayArea.WorkArea.Height - appWindow.Size.Height) / 2;
+            appWindow.Move(CenteredPosition);
+
+
             subWindow.Activate();
 
             subWindow.Closed += (sender, e) =>
@@ -213,6 +231,11 @@ namespace MyMediaProject.Pages
                 }
             };
         }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
         private async void Page_UnLoaded(object sender, RoutedEventArgs e)
         {
             var flagResult = await _dataServices.SaveRecentPlay(RecentMedia.ToList(),"recentPlayed.txt");
