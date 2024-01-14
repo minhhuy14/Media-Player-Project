@@ -62,6 +62,7 @@ namespace MyMediaProject.Pages
             var task1 = await _dataServices.LoadRecentMedia("recentPlayed.txt");
             var task2 = await _dataServices.LoadRecentMedia("recentQueue.txt");
             var task3 = await _dataServices.LoadRecentMedia("recentOnPlaylists.txt");
+            var task4 = await _dataServices.LoadRecentMedia("recentVideos.txt");
 
             // Combine the two lists and remove duplicates
             var combinedList = new HashSet<Media>();
@@ -82,6 +83,13 @@ namespace MyMediaProject.Pages
             if (task3 != null)
             {
                 foreach (var item in task3)
+                {
+                    combinedList.Add(item);
+                }
+            } 
+            if (task4 != null)
+            {
+                foreach (var item in task4)
                 {
                     combinedList.Add(item);
                 }

@@ -77,7 +77,6 @@ namespace MyMediaProject.Pages
             if (result == ContentDialogResult.Primary)
             {
                 // User clicked 'Yes' button
-                //
 
                 var flagResult = await _dataServices.RemovePlaylist(SelectedPlaylist);
                 if (!flagResult)

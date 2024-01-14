@@ -1,4 +1,6 @@
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.Graphics.Canvas.Text;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -42,10 +44,12 @@ namespace MyMediaProject.Pages
     {
         private DataServices _dataServices;
         public MediaPlaybackList _mediaPlaybackList;
+        private DispatcherQueue _dispatcher;
+        private HashSet<Uri> _hashSet;
         public Playlist DisplayPlaylist { get; set; }
         public Media SelectedMedia { get; set; }
 
-        private ObservableCollection<Media> _recentMedias;
+        private List<Media> _recentMedias;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -53,13 +57,68 @@ namespace MyMediaProject.Pages
         public MusicPage(Playlist playlist)
         {
             this.InitializeComponent();
+            _dispatcher = DispatcherQueue;
+
             DisplayPlaylist = playlist;
+            if (DisplayPlaylist == null)
+            {
+                DisplayPlaylist = new Playlist();
+            }
             _dataServices = new DataServices();
             _mediaPlaybackList = new MediaPlaybackList();
-            _recentMedias = new ObservableCollection<Media>();
+            _recentMedias = new List<Media>();
+            _hashSet = new HashSet<Uri>();
+            
+            _mediaPlaybackList.ShuffleEnabled = false;
+            NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
+        }
 
+        private void _mediaPlaybackList_CurrentItemChangedAsync(MediaPlaybackList sender, CurrentMediaPlaybackItemChangedEventArgs args)
+        {
+            try
+            {
+                if (sender.CurrentItem != null)
+                {
+                    var item = sender.CurrentItem;
+                    int index;
+
+                    for (index = 0; index < DisplayPlaylist.MediaCollection.Count; index++)
+                    {
+
+                        if (DisplayPlaylist.MediaCollection[index].Uri.Equals(item.Source.Uri))
+                        {
+                            break;
+                        }
+                    }
+
+                    _dispatcher.TryEnqueue(() =>
+                    {
+                        mediaDataGrid.SelectedItem = DisplayPlaylist.MediaCollection[index];
+                    });
+                }
+                else
+                {
+                    if (DisplayPlaylist.MediaCollection.Count > 0)
+                    {
+                        _dispatcher.TryEnqueue(() =>
+                        {
+                            mediaDataGrid.SelectedItem = DisplayPlaylist.MediaCollection[0];
+                        });
+                    }
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                // Log or handle the exception
+                Debug.WriteLine($"COMException: {ex.Message}");
+            }
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             // Init MediaPlayBackList
-            for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++) 
+            bool flag = false;
+            for (int i = 0; i < DisplayPlaylist.MediaCollection.Count; i++)
             {
                 var file = DisplayPlaylist.MediaCollection[i];
                 if (file != null)
@@ -67,18 +126,29 @@ namespace MyMediaProject.Pages
                     string extension = Path.GetExtension(file.Name);
                     if (extension.Equals(".mp3") || extension.Equals(".wma"))
                     {
-                        var item = new MediaPlaybackItem(MediaSource.CreateFromUri(file.Uri));
-                        _mediaPlaybackList.Items.Add(item);
+                        if (!_hashSet.Contains(DisplayPlaylist.MediaCollection[i].Uri))
+                        {
+                            var item = new MediaPlaybackItem(MediaSource.CreateFromUri(file.Uri));
+                            _mediaPlaybackList.Items.Add(item);
+                            _hashSet.Add(DisplayPlaylist.MediaCollection[i].Uri);
+                            DisplayPlaylist.MediaCollection[i].No = i + 1;
+                        }
+                        else
+                        {
+                            flag = true;
+                            DisplayPlaylist.MediaCollection.RemoveAt(i);
+                            i--;
+                        }
                     }
                 }
             }
-            
-            _mediaPlaybackList.ShuffleEnabled = false;
-            NavigationPage.MainMediaPlayerElement.Source = _mediaPlaybackList;
-        }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+            if (flag)
+            {
+                await _dataServices.SavePlaylist(DisplayPlaylist);
+            }
+
+            _mediaPlaybackList.CurrentItemChanged += _mediaPlaybackList_CurrentItemChangedAsync;
             DataContext = this;
         }
 
@@ -198,6 +268,11 @@ namespace MyMediaProject.Pages
                 {
                     
                     Uri fileUri = new Uri(file.Path);
+                    if (_hashSet.Contains(fileUri))
+                    {
+                        continue;
+                    }
+
                     string extension = Path.GetExtension(file.Name);
                     int currentNumItems = DisplayPlaylist.MediaCollection.Count;
                     int index = 0;
@@ -228,6 +303,7 @@ namespace MyMediaProject.Pages
                         }
 
                         _mediaPlaybackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromUri(fileUri)));
+                        _hashSet.Add(fileUri);
                     }
                     else
                     {
@@ -286,5 +362,6 @@ namespace MyMediaProject.Pages
 
             return list;
         }
+
     }
 }

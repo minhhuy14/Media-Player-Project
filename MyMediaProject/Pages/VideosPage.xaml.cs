@@ -21,6 +21,8 @@ namespace MyMediaProject.Pages
     public sealed partial class VideosPage : Page
     {
         private DataServices _dataServices;
+        private ObservableCollection<Media> _recentMedias;
+
         public ObservableCollection<Media> MediaCollection { get; set; }
         public Media SelectedMedia { get; set; }
         public VideosPage()
@@ -29,7 +31,7 @@ namespace MyMediaProject.Pages
 
             MediaCollection = new ObservableCollection<Media>();
             _dataServices = new DataServices();
-      
+            _recentMedias = new ObservableCollection<Media>();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +53,7 @@ namespace MyMediaProject.Pages
         private async void AddFiles_Click(object sender, RoutedEventArgs e)
         {
             await SetLocalMedia();
+            await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentVideos.txt");
         }
 
         private async void RemoveMedia_Click(object sender, RoutedEventArgs e)
@@ -119,6 +122,7 @@ namespace MyMediaProject.Pages
 
                         md = new Media() { Image = "/Assets/PlaylistLogo.png", Name = file.Name, Uri = fileUri, ImageBitmap = await _dataServices.GetThumbnailAsync(fileUri) };
                         MediaCollection.Add(md);
+                        _recentMedias.Add(md);
                     }
                     else
                     {
@@ -157,6 +161,9 @@ namespace MyMediaProject.Pages
                             videoPage = null;
                         }
                     };
+
+                    _recentMedias.Add(SelectedMedia);
+                    await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentVideos.txt");
                 }
                 else
                 {
