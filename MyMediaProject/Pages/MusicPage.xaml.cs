@@ -207,22 +207,30 @@ namespace MyMediaProject.Pages
         }
         async private System.Threading.Tasks.Task SaveLocalMedia()
         {
-            var window = new Microsoft.UI.Xaml.Window();
-            var hwd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.MusicLibrary;
-            savePicker.FileTypeChoices.Add("Playlist", new List<string>() { ".txt" });
-            savePicker.SuggestedFileName = DisplayPlaylist.Name;
-            WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwd);
-            Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
-            var res= await _dataServices.SaveAPlayListToFile(DisplayPlaylist, file);
-            if (res)
+            try
             {
-                   await App.MainRoot?.ShowDialog("Success!", "Save playlist successfully!");
+                var window = new Microsoft.UI.Xaml.Window();
+                var hwd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+                savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.MusicLibrary;
+                savePicker.FileTypeChoices.Add("Playlist", new List<string>() { ".txt" });
+                savePicker.SuggestedFileName = DisplayPlaylist.Name;
+                WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwd);
+                Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+                var res = await _dataServices.SaveAPlayListToFile(DisplayPlaylist, file);
+                if (res)
+                {
+                    await App.MainRoot?.ShowDialog("Success!", "Save playlist successfully!");
+                }
+                else
+                {
+                    await App.MainRoot?.ShowDialog("Error!", "Cannot save playlist!");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await App.MainRoot?.ShowDialog("Error!", "Cannot save playlist!");
+                Debug.WriteLine(ex.Message);
+                await App.MainRoot?.ShowDialog("Error", "Something is broken!");
             }
 
         }

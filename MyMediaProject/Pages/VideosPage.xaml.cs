@@ -9,6 +9,7 @@ using MyMediaProject.Models;
 using System.Collections.ObjectModel;
 using Windows.Storage;
 using Windows.Media.Playback;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -140,34 +141,43 @@ namespace MyMediaProject.Pages
                 var extension = Path.GetExtension(SelectedMedia.Name);
                 Uri fileUri = SelectedMedia.Uri;
 
-                StorageFile file = await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
-
-                if (extension.Equals(".mp4") || extension.Equals(".wmv"))
+                try
                 {
-                    var subWindow = new Window();
-                    var videoPage = new VideoPage(file);
-                    subWindow.Content = videoPage;
-                    subWindow.Title = file.Name;
+                    StorageFile file = await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
 
-                    subWindow.Activate();
 
-                    subWindow.Closed += (sender, e) =>
+                    if (extension.Equals(".mp4") || extension.Equals(".wmv"))
                     {
-                        subWindow.Content = null;
+                        var subWindow = new Window();
+                        var videoPage = new VideoPage(file);
+                        subWindow.Content = videoPage;
+                        subWindow.Title = file.Name;
 
-                        if (videoPage != null)
+                        subWindow.Activate();
+
+                        subWindow.Closed += (sender, e) =>
                         {
-                            videoPage.Dispose();
-                            videoPage = null;
-                        }
-                    };
+                            subWindow.Content = null;
 
-                    _recentMedias.Add(SelectedMedia);
-                    await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentVideos.txt");
+                            if (videoPage != null)
+                            {
+                                videoPage.Dispose();
+                                videoPage = null;
+                            }
+                        };
+
+                        _recentMedias.Add(SelectedMedia);
+                        await _dataServices.SaveRecentPlay(_recentMedias.ToList(), "recentVideos.txt");
+                    }
+                    else
+                    {
+                        await App.MainRoot?.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    await App.MainRoot?.ShowDialog("Error", "The extension of this file should be .mp4 or .wmv");
+                    Debug.WriteLine(ex.Message);
+                    await App.MainRoot?.ShowDialog("Error", "Something is broken!");
                 }
             }
         }

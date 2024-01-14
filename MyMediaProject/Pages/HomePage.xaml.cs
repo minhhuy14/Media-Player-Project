@@ -10,6 +10,7 @@ using MyMediaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -163,17 +164,25 @@ namespace MyMediaProject.Pages
                 var extension = Path.GetExtension(SelectedMedia.Name);
                 Uri fileUri = SelectedMedia.Uri;
 
-                StorageFile file=await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
+                try
+                {
+                    StorageFile file = await StorageFile.GetFileFromPathAsync(fileUri.LocalPath);
 
-                if (extension.Equals(".mp4") || extension.Equals(".wmv"))
-                {
-                    CreateSubVideoPage(file);
+                    if (extension.Equals(".mp4") || extension.Equals(".wmv"))
+                    {
+                        CreateSubVideoPage(file);
+                    }
+                    else
+                    {
+                        mediaPlaylist.Add(fileUri);
+                        NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
+                        NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    mediaPlaylist.Add(fileUri);
-                    NavigationPage.MainMediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
-                    NavigationPage.MainMediaPlayerElement.MediaPlayer.Play();
+                    Debug.WriteLine(ex.Message);
+                    await App.MainRoot?.ShowDialog("Error", "Something is broken!");
                 }
             }
         }

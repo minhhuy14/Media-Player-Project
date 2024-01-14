@@ -1,5 +1,7 @@
 using Microsoft.UI.Xaml.Controls;
+using MyMediaProject.Helpers;
 using System;
+using System.Diagnostics;
 using Windows.Media.Core;
 using Windows.Storage;
 
@@ -18,9 +20,17 @@ namespace MyMediaProject.Pages
         {
             this.InitializeComponent();
             VideoFile = videoFile;
-            Uri fileUri = new Uri(VideoFile.Path);
-            mediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
-            mediaPlayerElement.MediaPlayer.Play();
+
+            try
+            {
+                Uri fileUri = new Uri(VideoFile.Path);
+                mediaPlayerElement.Source = MediaSource.CreateFromUri(fileUri);
+                mediaPlayerElement.MediaPlayer.Play();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         public void Dispose()
