@@ -1,0 +1,86 @@
+<Page
+    x:Class="MyMediaProject.Pages.PlayQueuePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyMediaProject.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctWinUI ="using:CommunityToolkit.WinUI.UI.Controls"
+    Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="40 40 40 0">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush" Color="Transparent"/>
+                <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush" Color="Transparent"/>
+            </ResourceDictionary>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0 0 0 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Play Queue" FontSize="25" FontWeight="Bold"></TextBlock>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add files" Width="150" Style="{StaticResource AccentButtonStyle}" Click="AddFiles_Click" Margin="0 0 10 0"></Button>
+                <Button Content="Load a playlist" Click="LoadPlayList_Click" Width="150" Style="{StaticResource AccentButtonStyle}"></Button>
+            </StackPanel>
+        </Grid>
+
+
+        <Grid Grid.Row="1" Margin="0 0 0 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0 0 0 20" Orientation="Horizontal">
+                <AppBarButton Icon="Delete" Label="Remove" Content="Remove" Margin="0 0 10 0" BorderBrush="LightGray" BorderThickness="1" Click="RemoveMedia_Click"></AppBarButton>
+                <AppBarButton Icon="Add" Label="Add" Content="Add" Margin="0 0 0 0" BorderBrush="LightGray" BorderThickness="1"  Click="AddFiles_Click"></AppBarButton>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <ctWinUI:DataGrid Grid.Row="2" x:Name="mediaDataGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                  AutoGenerateColumns="False" 
+                                  CanUserSortColumns="True"
+                                  IsReadOnly="True" AllowFocusOnInteraction="False" AllowDrop="False" AllowFocusWhenDisabled="False"
+                                  BorderThickness="0" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0"
+                                  ItemsSource="{Binding DisplayPlaylist.MediaCollection, Mode=TwoWay}"
+                                  SelectedItem="{Binding SelectedMedia, Mode=TwoWay}"
+                                  DoubleTapped="Handle_DoubleTapped">
+                    <ctWinUI:DataGrid.Columns>
+                        <ctWinUI:DataGridTextColumn Header="No" 
+                            Binding="{Binding No}"
+                            Tag="No"
+                            Width="1*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Name"
+                            Binding="{Binding Name}"
+                            Tag="Name"
+                            Width="2*"/>
+
+                        <ctWinUI:DataGridTextColumn Header="Artist"
+                            Binding="{Binding Artist}"
+                            Tag="Artist" Width="2*"/>
+                
+                        <ctWinUI:DataGridTextColumn Header="Length"
+                            Binding="{Binding Length}"
+                            Tag="Duration" Width="2*"/>
+                    </ctWinUI:DataGrid.Columns>
+                </ctWinUI:DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

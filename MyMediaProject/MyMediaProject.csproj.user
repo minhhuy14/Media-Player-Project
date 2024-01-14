@@ -5,9 +5,30 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
-    <None Update="MainWindow.xaml">
+    <Page Update="Pages\VideosPage.xaml">
       <SubType>Designer</SubType>
-    </None>
+    </Page>
+    <Page Update="generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\VideoPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CreatePlaylistDialogPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MusicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PlaylistsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PlayQueuePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\HomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="NavigationPage.xaml">
       <SubType>Designer</SubType>
     </Page>

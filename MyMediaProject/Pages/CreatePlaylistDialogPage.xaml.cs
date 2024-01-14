@@ -7,30 +7,32 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Email;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Media.Core;
-using Windows.Media.Playlists;
+using Windows.Foundation.Diagnostics;
+using Windows.UI.Popups;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace MyMediaProject
+namespace MyMediaProject.Pages
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class CreatePlaylistDialogPage : Page
     {
-        private List<Uri> mediaPlaylist = new List<Uri>();
-        private int currentMediaIndex = 0;
-        public MainWindow()
+        public string Playlist {  get; set; }
+        
+        public CreatePlaylistDialogPage()
         {
             this.InitializeComponent();
-            this.Title = "Media Player";
+            this.DataContext = this;
         }
     }
 }

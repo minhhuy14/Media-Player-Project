@@ -7,57 +7,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NavigationView x:Name="nvSample"
-    IsSettingsVisible="True"
-    IsBackButtonVisible="Auto"
-    IsBackEnabled="False"
-
-    Header="Header"
-    AlwaysShowHeader="True"
-    PaneTitle="Pane Title"
-    PaneDisplayMode="Left"
-    ExpandedModeThresholdWidth="500"
-    SelectionFollowsFocus="Disabled"
-    IsTabStop="False">
-
+        <NavigationView x:Name="nvMain"
+                        PaneDisplayMode="Left"
+                        IsBackButtonVisible="Collapsed"
+                        SelectionChanged="nvMain_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Menu Item1" Tag="SamplePage1" x:Name="SamplePage1Item">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Play" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItemHeader Content="Actions"/>
-                <NavigationViewItem Content="Menu Item2" Tag="SamplePage2" x:Name="SamplePage2Item" SelectsOnInvoked="True">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Save" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem Content="Menu Item3" Tag="SamplePage3" x:Name="SamplePage3Item">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Refresh" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                <NavigationViewItem Content="Home" Tag="Home" Icon="Home" IsSelected="True" />
+                <NavigationViewItem Content="Videos" Tag="Videos" Icon="Video"/>
+                <NavigationViewItem Content="Play queue" Tag="Play queue" Icon="ViewAll"/>
+                <NavigationViewItem Content="Playlists" Tag="Playlists" Icon="Play"/>
             </NavigationView.MenuItems>
 
-            <NavigationView.PaneCustomContent>
-                <HyperlinkButton x:Name="PaneHyperlink" Content="More info" Margin="12,0" Visibility="Collapsed" />
-            </NavigationView.PaneCustomContent>
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
 
-            <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" />
-            </NavigationView.AutoSuggestBox>
+                <Frame Grid.Row="0" x:Name="contentFrame"></Frame>
 
-            <NavigationView.PaneFooter>
-                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Collapsed">
-                    <NavigationViewItem Icon="Download" AutomationProperties.Name="download" />
-                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="favorite" />
-                </StackPanel>
-            </NavigationView.PaneFooter>
-
-            <Frame x:Name="contentFrame" />
+                <MediaPlayerElement Grid.Row="1" x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
+                                                IsRepeatButtonVisible="True"
+                                                IsRepeatEnabled="True"
+                                                IsPlaybackRateButtonVisible="True" 
+                                                IsPlaybackRateEnabled="True"
+                                                IsNextTrackButtonVisible="True"
+                                                IsPreviousTrackButtonVisible="True"/>
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
+            </Grid>
         </NavigationView>
     </Grid>
 </Page>

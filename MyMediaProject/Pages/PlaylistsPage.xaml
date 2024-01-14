@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MyMediaProject.Pages.PlaylistsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyMediaProject.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="40 40 40 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0 0 0 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+    
+            
+            <TextBlock Grid.Column="0" Text="Playlists" FontSize="25" FontWeight="Bold"></TextBlock>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Create Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="CreatePlayList" Margin="0 0 10 0"></Button>
+                <Button Content="Remove Playlist"  Width="150" Style="{StaticResource AccentButtonStyle}" Click="RemovePlayList"></Button>
+          </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0 0 0 20">
+            <ScrollView HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" VerticalScrollChainMode="Always">
+                <GridView  
+                    x:Name="MediaGridView"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    ItemsSource="{Binding Playlists, Mode=OneWay}"
+                    SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}"
+                    DoubleTapped="MediaGridView_DoubleTapped"
+                    HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Width="150" Height="200" Margin="10">
+                                <Border 
+                                 BorderBrush="LightGray"
+                                 BorderThickness="1"
+                                 CornerRadius="10"
+                                 HorizontalAlignment="Stretch" 
+                                 VerticalAlignment="Stretch">
+                                    <Image Width="150" Height="150" 
+                                     Source="{Binding Image}" Stretch="UniformToFill"/>
+                                </Border>
+                                <TextBlock Margin="5 5 0 0" TextWrapping="Wrap" HorizontalTextAlignment="Left">
+                                 <Run Text="{Binding Name}" FontWeight="Bold"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                    <!--<GridView.ItemsPanel>
+                     <ItemsPanelTemplate>
+                         <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                               MaximumRowsOrColumns="5"
+                               Orientation="Horizontal"/>
+                     </ItemsPanelTemplate>
+                 </GridView.ItemsPanel>-->
+                </GridView>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</Page>

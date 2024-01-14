@@ -7,35 +7,4 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <NavigationView x:Name="nvSample">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Play" Content="Menu Item1" Tag="SamplePage1" />
-                <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="SamplePage2" />
-                <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
-                <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
-            </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame"/>
-        </NavigationView>
-        <!--<MediaPlayerElement x:Name="mediaPlayerElement"
-                    Source="ms-appx:///D:/HK1 2023-2024/WINDOWS/MyMediaProject/MyMediaProject/Videos/video1.mp4"
-                    Width="400"
-                    AutoPlay="False"
-                    AreTransportControlsEnabled="True"/>-->
-        <MediaPlayerElement x:Name="mediaPlayerElement" Source="ms-appx:///Assets/audio.wma"
-          AreTransportControlsEnabled="True">
-            <MediaPlayerElement.TransportControls>
-                <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False" 
-                                IsNextTrackButtonVisible="true"   IsPreviousTrackButtonVisible="true"  IsPlaybackRateButtonVisible="True" IsPlaybackRateEnabled="True" />
-            </MediaPlayerElement.TransportControls>
-        </MediaPlayerElement>
-        <Button Content="Choose file" Click="Button_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-        <ListBox x:Name="playlist" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
-        <Button Content="Remove file" Click="RemoveFile_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-
-
-    </StackPanel>
- 
 </Window>
