@@ -1,4 +1,4 @@
-#🎼 Project Media Player
+# 🎼 Project Media Player
 ## Windows Programming Course 21_3
 ### 📍CORE FEATURES
 ✅ **Add all media files you want to play into a playlist**
